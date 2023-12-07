@@ -1,3 +1,37 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.cl-internal-b3fm6y {
+  display: none;
+}
+
+.cl-userButtonPopoverFooter {
+  display: none;
+}
+
+.cl-navbar {
+  display: none;
+}
+
+.cl-profileSectionPrimaryButton {
+  color: #fff;
+}
+
+.cl-profileSectionPrimaryButton {
+  background: #3d3d40;
+}
+
+.cl-profileSectionPrimaryButton:hover {
+  background: #59595e;
+}
+
+.cl-badge {
+  background-color: transparent;
+  color: #ffb5cf;
+}
+
+.cl-userButtonPopoverRootBox,
+.cl-scrollBox {
+  font-family: "monospace";
+}

@@ -13,8 +13,13 @@ export default {
   daisyui: {
     themes: [
       {
-        light: {
+        default: {
           ...require("daisyui/src/theming/themes")["pastel"],
+          primary: "pink",
+          secondary: "teal",
+        },
+        darkTheme: {
+          ...require("daisyui/src/theming/themes")["black"],
           primary: "pink",
           secondary: "teal",
         },

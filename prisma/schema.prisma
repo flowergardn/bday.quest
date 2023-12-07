@@ -19,8 +19,12 @@ model User {
 model Wishes {
     id String @id
     creatorId String
+    cardId String
     text String
     createdAt DateTime @default(now())
+
+    Cards Cards @relation(fields: [cardId], references: [id])
+    @@index([cardId])
 }
 
 model Cards {
@@ -31,6 +35,7 @@ model Cards {
   createdAt DateTime @default(now())
   birthday String
 
+  wishes Wishes[]
   User User @relation(fields: [creatorId], references: [id])
 
   @@index([creatorId])
