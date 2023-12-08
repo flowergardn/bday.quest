@@ -31,7 +31,7 @@ const CardPage: NextPage<{ id: string }> = ({ id }) => {
 
   const { mutate, isError, error } = api.cards.createWish.useMutation({
     onSuccess: () => {
-      location.pathname = "/";
+      location.href = `/c/${id}`;
     },
   });
 
