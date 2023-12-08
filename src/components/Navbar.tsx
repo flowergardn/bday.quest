@@ -1,9 +1,13 @@
 import { UserButton, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect } from "react";
+import { themeChange } from "theme-change";
 
 const Navbar = () => {
   const { isLoaded, user } = useUser();
+
+  useEffect(() => themeChange(false), []);
 
   const UserDropdown = () => {
     return (

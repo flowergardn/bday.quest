@@ -1,14 +1,10 @@
 import { SignInButton, useAuth } from "@clerk/nextjs";
 import Head from "next/head";
 import Link from "next/link";
-import { useEffect } from "react";
-import { themeChange } from "theme-change";
 import Navbar from "~/components/Navbar";
 
 export default function Home() {
   const { isLoaded, isSignedIn } = useAuth();
-
-  useEffect(() => themeChange(false), []);
 
   const CTA = () => {
     if (!isLoaded || !isSignedIn) {
@@ -38,7 +34,7 @@ export default function Home() {
       </Head>
 
       <Navbar />
-      <div className="hero bg-base-200 min-h-screen">
+      <div className="hero min-h-screen bg-base-200">
         <div className="hero-content text-center">
           <div className="max-w-md">
             <h1 className="text-5xl font-bold">bday.quest</h1>
