@@ -22,9 +22,6 @@ model Wishes {
     cardId String
     text String
     createdAt DateTime @default(now())
-
-    Cards Cards @relation(fields: [cardId], references: [id])
-    @@index([cardId])
 }
 
 model Cards {
@@ -33,9 +30,8 @@ model Cards {
   title       String
   description String @default("")
   createdAt DateTime @default(now())
-  birthday String
+  birthday DateTime
 
-  wishes Wishes[]
   User User @relation(fields: [creatorId], references: [id])
 
   @@index([creatorId])

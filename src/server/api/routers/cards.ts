@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { z } from "zod";
 
 import {
@@ -25,8 +26,23 @@ export const cardRouter = createTRPCRouter({
     .input(
       z.object({
         title: z.string().min(1),
-        description: z.string().max(256).nullable(),
+        description: z.string().max(256).default(""),
+        birthday: z.string().datetime(),
+        showAge: z.boolean().default(true),
       }),
     )
-    .mutation(async ({ ctx, input }) => {}),
+    .mutation(async ({ ctx, input }) => {
+      const card = await ctx.db.cards.create({
+        data: {
+          birthday: input.birthday,
+          title: input.title,
+          description: input.description,
+          creatorId: ctx.userId,
+        },
+      });
+
+      return {
+        id: card.id,
+      };
+    }),
 });

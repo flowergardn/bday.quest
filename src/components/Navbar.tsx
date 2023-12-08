@@ -8,7 +8,7 @@ const Navbar = () => {
   const UserDropdown = () => {
     return (
       <>
-        <div className="dropdown-end dropdown hidden md:block">
+        <div className="dropdown dropdown-end hidden md:block">
           <UserButton
             afterSignOutUrl="/"
             appearance={{
@@ -36,7 +36,7 @@ const Navbar = () => {
             />
           </div>
           <Link href={"/"} passHref>
-            <button className="btn-ghost btn text-xl normal-case">
+            <button className="btn btn-ghost text-xl normal-case">
               bday.quest
             </button>
           </Link>

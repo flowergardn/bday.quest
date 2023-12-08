@@ -16,11 +16,13 @@ export default {
         default: {
           ...require("daisyui/src/theming/themes")["pastel"],
           primary: "pink",
+          "base-100": "#f9fafb",
           secondary: "teal",
         },
         darkTheme: {
           ...require("daisyui/src/theming/themes")["black"],
           primary: "pink",
+          "base-100": "#141414",
           secondary: "teal",
         },
       },
