@@ -17,8 +17,8 @@ model User {
 }
 
 model Wishes {
-    id String @id
-    creatorId String
+    id String @id @default(cuid())
+    creatorId String @unique
     cardId String
     text String
     createdAt DateTime @default(now())

@@ -76,4 +76,21 @@ export const cardRouter = createTRPCRouter({
 
       return parsedWishes;
     }),
+
+  createWish: privateProcedure
+    .input(
+      z.object({
+        cardId: z.string().cuid(),
+        message: z.string().max(300),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db.wishes.create({
+        data: {
+          cardId: input.cardId,
+          creatorId: ctx.userId,
+          text: input.message,
+        },
+      });
+    }),
 });

@@ -4,6 +4,7 @@ import Navbar from "~/components/Navbar";
 import { generateSSGHelper } from "~/server/api/helpers/ssgHelper";
 import { api } from "~/utils/api";
 import Signatures from "~/components/Signatures";
+import Link from "next/link";
 
 const CardPage: NextPage<{ id: string }> = ({ id }) => {
   const {
@@ -44,7 +45,9 @@ const CardPage: NextPage<{ id: string }> = ({ id }) => {
           <h2>Wishes</h2>
         </article>
         <Signatures signatures={data} />
-        <button className="btn btn-disabled btn-primary">Create</button>
+        <Link href={`/c/${id}/sign`}>
+          <button className="btn btn-primary">Create</button>
+        </Link>
       </>
     );
   };
@@ -59,10 +62,10 @@ const CardPage: NextPage<{ id: string }> = ({ id }) => {
 
       <Navbar />
       <div className="hero flex min-h-screen flex-col items-center bg-base-100">
-        <div className="card mb-12 mt-20 w-full max-w-sm shrink-0 bg-white/30 p-6 shadow-2xl">
+        <div className="card mb-12 mt-20 w-full max-w-sm shrink-0  p-6 shadow-2xl">
           <CardInfo />
         </div>
-        <div className="card mb-4 w-full max-w-sm shrink-0 bg-white/30 p-6 shadow-2xl">
+        <div className="card mb-4 w-full max-w-sm shrink-0  p-6 shadow-2xl">
           <CardWishes />
         </div>
       </div>
