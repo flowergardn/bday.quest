@@ -2,6 +2,7 @@ import Head from "next/head";
 import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
 import dayjs from "dayjs";
+import Navbar from "~/components/Navbar";
 
 export default function CreateCard() {
   type CardDataValues = {
@@ -10,12 +11,35 @@ export default function CreateCard() {
     birthday: string;
     showAge: boolean;
   };
+  // used for type-checking in our textbox component
+  type CardDataTypes = "title" | "description" | "birthday";
 
   const { register, handleSubmit } = useForm<CardDataValues>();
 
   const { mutate } = api.cards.create.useMutation({
     onSuccess: (data) => (location.href = `/c/${data.id}`),
   });
+
+  const Textbox = (props: {
+    title: React.ReactNode;
+    type: CardDataTypes;
+    inputType?: string;
+  }) => {
+    return (
+      <div className="form-control">
+        <label className="label">
+          <span className="label-text">{props.title}</span>
+        </label>
+        <input
+          type={props.inputType ? props.inputType : "text"}
+          placeholder={props.type}
+          className="input input-bordered rounded-lg"
+          required
+          {...register(props.type)}
+        />
+      </div>
+    );
+  };
 
   return (
     <>
@@ -28,55 +52,30 @@ export default function CreateCard() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <Navbar />
       <div className="hero min-h-screen bg-base-200">
         <div className="card w-full max-w-sm shrink-0 bg-base-100 shadow-2xl">
           <form
             className="card-body"
             onSubmit={handleSubmit((data) => {
-              console.log(dayjs(data.birthday).toISOString());
               data.birthday = dayjs(data.birthday).toISOString();
               mutate(data);
             })}
           >
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Title</span>
-              </label>
-              <input
-                placeholder="title"
-                className="input input-bordered rounded-lg"
-                required
-                {...register("title")}
-              />
-            </div>
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Description</span>
-              </label>
-              <input
-                placeholder="description"
-                className="input input-bordered rounded-lg"
-                required
-                {...register("description")}
-              />
-            </div>
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">
+            <Textbox title="Title" type="title" />
+            <Textbox title="Description" type="description" />
+            <Textbox
+              title={
+                <>
                   Birthday{" "}
                   <span className="text-xs">
                     (birth year is irrelevant but nice)
                   </span>
-                </span>
-              </label>
-              <input
-                type="date"
-                placeholder="description"
-                className="input input-bordered rounded-lg"
-                required
-                {...register("birthday")}
-              />
-            </div>
+                </>
+              }
+              type="description"
+              inputType="date"
+            />
             <div className="form-control">
               <label className="label cursor-pointer">
                 <span className="label-text">Show age?</span>
