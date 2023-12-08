@@ -16,9 +16,15 @@ export default function Home() {
     }
 
     return (
-      <Link href={"/create"}>
-        <button className="btn btn-primary">Create</button>
-      </Link>
+      <div className="flex w-full text-slate-800">
+        <button className="grid flex-grow place-items-center rounded-box bg-primary  p-3">
+          <Link href={"/create"}>Create</Link>
+        </button>
+        <div className="divider divider-horizontal"></div>
+        <button className="grid flex-grow place-items-center rounded-box bg-primary p-3">
+          <Link href={"/manage"}>Manage</Link>
+        </button>
+      </div>
     );
   };
 
