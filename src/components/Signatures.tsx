@@ -1,5 +1,5 @@
 import { useState } from "react";
-import CardWish from "~/pages/interfaces/CardWish";
+import CardWish from "~/interfaces/CardWish";
 
 const Signatures = ({ signatures }: { signatures: CardWish[] }) => {
   const [page, setPage] = useState(0);

@@ -3,7 +3,7 @@ import { z } from "zod";
 import { clerkClient } from "@clerk/nextjs";
 
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
-import CardWish from "~/pages/interfaces/CardWish";
+import CardWish from "~/interfaces/CardWish";
 import { TRPCError } from "@trpc/server";
 
 export const cardRouter = createTRPCRouter({
