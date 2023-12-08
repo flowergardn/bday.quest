@@ -73,7 +73,7 @@ export default function CreateCard() {
                   </span>
                 </>
               }
-              type="description"
+              type="birthday"
               inputType="date"
             />
             <div className="form-control">

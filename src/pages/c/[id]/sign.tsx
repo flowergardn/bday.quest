@@ -46,19 +46,13 @@ const CardPage: NextPage<{ id: string }> = ({ id }) => {
   };
 
   const Error = (props: { error: string }) => {
-    let err = props.error;
-
-    if (err.includes("Unique constraint failed on the fields:")) {
-      err = "You've already submitted a wish to this card!";
-    }
-
     return (
       <div>
         <div
           className={`animate-fadeIn alert alert-error mt-10 pl-10 pr-10 shadow-lg`}
         >
           <div>
-            <span>{err}</span>
+            <span>{props.error}</span>
           </div>
         </div>
       </div>

@@ -4,6 +4,7 @@ import { clerkClient } from "@clerk/nextjs";
 
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
 import CardWish from "~/pages/interfaces/CardWish";
+import { TRPCError } from "@trpc/server";
 
 export const cardRouter = createTRPCRouter({
   create: privateProcedure
@@ -85,6 +86,19 @@ export const cardRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      const hasWish = await ctx.db.wishes.findFirst({
+        where: {
+          cardId: input.cardId,
+          creatorId: ctx.userId,
+        },
+      });
+
+      if (hasWish)
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          cause: "You've already submitted a wish to this card!",
+        });
+
       return await ctx.db.wishes.create({
         data: {
           cardId: input.cardId,
