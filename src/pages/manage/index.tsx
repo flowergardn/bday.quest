@@ -1,6 +1,6 @@
 import type { Cards } from "@prisma/client";
 import Head from "next/head";
-import { Cake, Calandar, Pen, Trash } from "~/components/Icons";
+import { Cake, Calendar, Eye, Pen, Trash } from "~/components/Icons";
 import Navbar from "~/components/Navbar";
 import Link from "next/link";
 import { api } from "~/utils/api";
@@ -32,7 +32,7 @@ export default function ManageCards() {
       return (
         <div className="flex items-center">
           <div className="tooltip" data-tip="Card creation date">
-            <Calandar />
+            <Calendar />
           </div>
           <span className="ml-2">Created {createdAt.fromNow()}</span>
         </div>
@@ -85,6 +85,11 @@ export default function ManageCards() {
           </p>
         </article>
         <div className="mt-6">
+          <button className="btn btn-sm mr-4">
+            <Link href={`/c/${props.card.id}`}>
+              <Eye />
+            </Link>
+          </button>
           <button className="btn btn-sm mr-4">
             <Link href={`/manage/${props.card.id}`}>
               <Pen />
