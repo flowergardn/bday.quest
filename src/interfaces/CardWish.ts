@@ -1,4 +1,4 @@
-import { Wishes } from "@prisma/client";
+import type { Wishes } from "@prisma/client";
 
 export default interface CardWish extends Wishes {
   profilePicture: string;

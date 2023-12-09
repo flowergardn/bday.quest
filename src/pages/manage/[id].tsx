@@ -1,9 +1,10 @@
-import { GetStaticProps, NextPage } from "next";
+import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
-import { SubmitHandler, useForm } from "react-hook-form";
+import type { SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { CardDataValues, Textbox } from "~/components/EditCard";
+import { Textbox } from "~/components/EditCard";
+import type { CardDataValues } from "~/components/EditCard";
 import Navbar from "~/components/Navbar";
 import Signatures from "~/components/Signatures";
 import { generateSSGHelper } from "~/server/api/helpers/ssgHelper";

@@ -1,4 +1,4 @@
-import { GetStaticProps, NextPage } from "next";
+import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Navbar from "~/components/Navbar";
 import { generateSSGHelper } from "~/server/api/helpers/ssgHelper";

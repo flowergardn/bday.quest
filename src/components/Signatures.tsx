@@ -1,5 +1,5 @@
 import { useState } from "react";
-import CardWish from "~/interfaces/CardWish";
+import type CardWish from "~/interfaces/CardWish";
 import { Trash } from "./Icons";
 import toast from "react-hot-toast";
 import { api } from "~/utils/api";
