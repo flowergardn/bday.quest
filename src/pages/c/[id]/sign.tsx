@@ -40,7 +40,9 @@ const CardPage: NextPage<{ id: string }> = ({ id }) => {
   });
 
   if (isLoaded && !user) {
-    location.href = `/c/${id}`;
+    location.href = `https://accounts.bday.quest/sign-in?redirect_url=${encodeURI(
+      `https://bday.quest/c/${id}`,
+    )}`;
   }
 
   if (cardLoading) return <></>;
