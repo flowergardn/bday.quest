@@ -99,7 +99,7 @@ const Signature = (props: { signature: CardWish; admin?: boolean }) => {
   };
 
   return (
-    <div className="flex flex-row" key={props.signature.id}>
+    <div className="mb-4 flex flex-row" key={props.signature.id}>
       <img
         src={props.signature.profilePicture}
         className="mt-[0.375rem] h-10 w-10 rounded-full"
@@ -107,7 +107,7 @@ const Signature = (props: { signature: CardWish; admin?: boolean }) => {
       <div className="ml-2 flex w-[75%] flex-col text-[1rem] lg:w-[78%]">
         <b>{props.signature.username}</b>
         <button
-          className={`max-h-6 w-full truncate text-ellipsis text-start`}
+          className={`max-h-6 w-full text-start`}
           onClick={() => {
             alert(props.signature.text);
           }}
