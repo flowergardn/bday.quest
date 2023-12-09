@@ -55,7 +55,7 @@ const CardPage: NextPage<{ id: string }> = ({ id }) => {
   return (
     <>
       <Head>
-        <title>bday.quest</title>
+        <title>{data.title} | bday.quest (beta)</title>
         <meta name="description" content={data.description} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
