@@ -107,7 +107,7 @@ const Signature = (props: { signature: CardWish; admin?: boolean }) => {
       <div className="ml-2 flex w-[75%] flex-col text-[1rem] lg:w-[78%]">
         <b>{props.signature.username}</b>
         <button
-          className={`max-h-6 w-full text-start`}
+          className={`max-h-6 w-full truncate text-ellipsis text-start`}
           onClick={() => {
             alert(props.signature.text);
           }}
