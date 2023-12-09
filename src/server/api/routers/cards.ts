@@ -47,6 +47,14 @@ export const cardRouter = createTRPCRouter({
       return card;
     }),
 
+  fetchAll: privateProcedure.query(async ({ ctx, input }) => {
+    return await ctx.db.cards.findMany({
+      where: {
+        creatorId: ctx.userId,
+      },
+    });
+  }),
+
   getWishes: privateProcedure
     .input(
       z.object({

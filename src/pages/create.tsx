@@ -44,7 +44,7 @@ export default function CreateCard() {
   return (
     <>
       <Head>
-        <title>bday.quest</title>
+        <title>bday.quest | Create</title>
         <meta
           name="description"
           content="Create custom birthday cards for your friends."
