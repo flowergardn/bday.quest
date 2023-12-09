@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-let defaults = {
+const defaults = {
   title: "bday.quest (beta)",
   description: "Create virtual birthday cards",
   color: "#eb5d71",
