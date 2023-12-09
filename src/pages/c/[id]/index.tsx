@@ -1,10 +1,10 @@
 import type { GetStaticProps, NextPage } from "next";
-import Head from "next/head";
 import Navbar from "~/components/Navbar";
 import { generateSSGHelper } from "~/server/api/helpers/ssgHelper";
 import { api } from "~/utils/api";
 import Signatures from "~/components/Signatures";
 import Link from "next/link";
+import Meta from "~/components/Meta";
 
 const CardPage: NextPage<{ id: string }> = ({ id }) => {
   const {
@@ -54,12 +54,10 @@ const CardPage: NextPage<{ id: string }> = ({ id }) => {
 
   return (
     <>
-      <Head>
-        <title>Sign this card | bday.quest (beta)</title>
-        <meta name="description" content={data.description} />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
+      <Meta
+        title="Sign this card | bday.quest (beta)"
+        description={data.description}
+      />
       <Navbar />
       <div className="hero flex min-h-screen flex-col items-center bg-base-100">
         <div className="card mb-12 mt-20 w-full max-w-sm shrink-0  p-6 shadow-2xl">

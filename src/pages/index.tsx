@@ -1,6 +1,6 @@
 import { SignInButton, useAuth } from "@clerk/nextjs";
-import Head from "next/head";
 import Link from "next/link";
+import Meta from "~/components/Meta";
 import Navbar from "~/components/Navbar";
 
 export default function Home() {
@@ -30,14 +30,7 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <title>bday.quest</title>
-        <meta
-          name="description"
-          content="Create custom birthday cards for your friends."
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Meta title="bday.quest (beta)" />
 
       <Navbar />
       <div className="hero min-h-screen bg-base-200">

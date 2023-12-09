@@ -1,11 +1,11 @@
 import type { GetStaticProps, NextPage } from "next";
-import Head from "next/head";
 import Navbar from "~/components/Navbar";
 import { generateSSGHelper } from "~/server/api/helpers/ssgHelper";
 import { api } from "~/utils/api";
 import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
 import { useUser } from "@clerk/nextjs";
+import Meta from "~/components/Meta";
 
 type FormValues = {
   message: string;
@@ -111,11 +111,7 @@ const CardPage: NextPage<{ id: string }> = ({ id }) => {
 
   return (
     <>
-      <Head>
-        <title>bday.quest</title>
-        <meta name="description" content={data.description} />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Meta />
 
       <Navbar />
       <div className="hero flex min-h-screen flex-col items-center bg-base-100">

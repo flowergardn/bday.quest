@@ -1,10 +1,10 @@
 import type { GetStaticProps, NextPage } from "next";
-import Head from "next/head";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Textbox } from "~/components/EditCard";
 import type { CardDataValues } from "~/components/EditCard";
+import Meta from "~/components/Meta";
 import Navbar from "~/components/Navbar";
 import Signatures from "~/components/Signatures";
 import { generateSSGHelper } from "~/server/api/helpers/ssgHelper";
@@ -72,11 +72,7 @@ const ManageCard: NextPage<{ id: string }> = ({ id }) => {
 
   return (
     <>
-      <Head>
-        <title>bday.quest</title>
-        <meta name="description" content={data.description} />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Meta />
 
       <Navbar />
       <div className="hero flex min-h-screen items-center justify-center  bg-base-200">

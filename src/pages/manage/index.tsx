@@ -1,5 +1,4 @@
 import type { Cards } from "@prisma/client";
-import Head from "next/head";
 import { Cake, Calendar, Eye, Pen, Trash } from "~/components/Icons";
 import Navbar from "~/components/Navbar";
 import Link from "next/link";
@@ -8,6 +7,7 @@ import toast from "react-hot-toast";
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import Meta from "~/components/Meta";
 dayjs.extend(relativeTime);
 
 export default function ManageCards() {
@@ -116,14 +116,7 @@ export default function ManageCards() {
 
   return (
     <>
-      <Head>
-        <title>bday.quest | Manage</title>
-        <meta
-          name="description"
-          content="Create custom birthday cards for your friends."
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Meta title="Manage | bday.quest (beta)" />
 
       <Navbar />
       <div className="hero flex min-h-screen flex-col items-center bg-base-100">

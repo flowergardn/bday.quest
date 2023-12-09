@@ -1,9 +1,9 @@
-import Head from "next/head";
 import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
 import dayjs from "dayjs";
 import Navbar from "~/components/Navbar";
 import { Textbox } from "~/components/EditCard";
+import Meta from "~/components/Meta";
 
 export default function CreateCard() {
   type CardDataValues = {
@@ -21,14 +21,7 @@ export default function CreateCard() {
 
   return (
     <>
-      <Head>
-        <title>bday.quest | Create</title>
-        <meta
-          name="description"
-          content="Create custom birthday cards for your friends."
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Meta title="Create a card | bday.quest (beta)" />
 
       <Navbar />
       <div className="hero min-h-screen bg-base-200">
