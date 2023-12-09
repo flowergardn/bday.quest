@@ -10,9 +10,9 @@ Here is a list of things to be done with `bday.quest`.
 
 ## Other important things
 
-- [ ] Card management
-  - [ ] Users should be able to view the cards they've created, and edit the details.
-  - [ ] On a specific cards management page, they should also be able to report and delete wishes from the card.
+- [x] Card management
+  - [x] Users should be able to view the cards they've created, and edit the details.
+  - [x] On a specific cards management page, they should also be able to report and delete wishes from the card.
 - [ ] Birthday related thingies
   - [ ] Confetti once its the persons birthday
   - [ ] Day counter

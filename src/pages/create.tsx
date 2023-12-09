@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
 import dayjs from "dayjs";
 import Navbar from "~/components/Navbar";
+import { Textbox } from "~/components/EditCard";
 
 export default function CreateCard() {
   type CardDataValues = {
@@ -11,35 +12,12 @@ export default function CreateCard() {
     birthday: string;
     showAge: boolean;
   };
-  // used for type-checking in our textbox component
-  type CardDataTypes = "title" | "description" | "birthday";
 
   const { register, handleSubmit } = useForm<CardDataValues>();
 
   const { mutate } = api.cards.create.useMutation({
     onSuccess: (data) => (location.href = `/c/${data.id}`),
   });
-
-  const Textbox = (props: {
-    title: React.ReactNode;
-    type: CardDataTypes;
-    inputType?: string;
-  }) => {
-    return (
-      <div className="form-control">
-        <label className="label">
-          <span className="label-text">{props.title}</span>
-        </label>
-        <input
-          type={props.inputType ? props.inputType : "text"}
-          placeholder={props.type}
-          className="input input-bordered rounded-lg"
-          required
-          {...register(props.type)}
-        />
-      </div>
-    );
-  };
 
   return (
     <>
@@ -62,8 +40,13 @@ export default function CreateCard() {
               mutate(data);
             })}
           >
-            <Textbox title="Title" type="title" />
-            <Textbox title="Description" type="description" />
+            <Textbox title="Title" type="title" register={register} required />
+            <Textbox
+              title="Description"
+              type="description"
+              register={register}
+              required
+            />
             <Textbox
               title={
                 <>
@@ -75,6 +58,8 @@ export default function CreateCard() {
               }
               type="birthday"
               inputType="date"
+              register={register}
+              required
             />
             <div className="form-control">
               <label className="label cursor-pointer">

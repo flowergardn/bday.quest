@@ -31,10 +31,54 @@ export const cardRouter = createTRPCRouter({
       };
     }),
 
+  edit: privateProcedure
+    .input(
+      z.object({
+        cardId: z.string().cuid(),
+        title: z.string().nullish(),
+        description: z.string().nullish(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const card = await ctx.db.cards.findUnique({
+        where: {
+          id: input.cardId,
+          creatorId: ctx.userId,
+        },
+      });
+
+      if (!card)
+        throw new TRPCError({
+          code: "NOT_FOUND",
+        });
+
+      if (!input.title && !input.description)
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          cause: "Either a title or description should be specified.",
+        });
+
+      const update: {
+        title?: string;
+        description?: string;
+      } = {};
+
+      if (input.title) update.title = input.title;
+      if (input.description) update.description = input.description;
+
+      return await ctx.db.cards.update({
+        where: {
+          id: input.cardId,
+        },
+        data: update,
+      });
+    }),
+
   fetch: privateProcedure
     .input(
       z.object({
         cardId: z.string().cuid(),
+        requireOwner: z.boolean().default(false),
       }),
     )
     .query(async ({ ctx, input }) => {
@@ -43,6 +87,15 @@ export const cardRouter = createTRPCRouter({
           id: input.cardId,
         },
       });
+
+      if (card && input.requireOwner) {
+        if (card.creatorId !== ctx.userId) {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "You don't own this card :(",
+          });
+        }
+      }
 
       return card;
     }),
@@ -126,6 +179,33 @@ export const cardRouter = createTRPCRouter({
           cardId: input.cardId,
           creatorId: ctx.userId,
           text: input.message,
+        },
+      });
+    }),
+
+  deleteWish: privateProcedure
+    .input(
+      z.object({
+        cardId: z.string().cuid(),
+        wishId: z.string().cuid(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const card = await ctx.db.cards.findUnique({
+        where: {
+          id: input.cardId,
+          creatorId: ctx.userId,
+        },
+      });
+
+      if (!card)
+        throw new TRPCError({
+          code: "NOT_FOUND",
+        });
+
+      return await ctx.db.wishes.delete({
+        where: {
+          id: input.wishId,
         },
       });
     }),

@@ -1,7 +1,16 @@
 import { useState } from "react";
 import CardWish from "~/interfaces/CardWish";
+import { Trash } from "./Icons";
+import toast from "react-hot-toast";
+import { api } from "~/utils/api";
 
-const Signatures = ({ signatures }: { signatures: CardWish[] }) => {
+const Signatures = ({
+  signatures,
+  admin,
+}: {
+  signatures: CardWish[];
+  admin?: boolean;
+}) => {
   const [page, setPage] = useState(0);
 
   const signaturesPerPage = 4;
@@ -28,7 +37,7 @@ const Signatures = ({ signatures }: { signatures: CardWish[] }) => {
     <div className="flex h-full w-full flex-col justify-between">
       <h1 className="ml-2 mt-2 space-y-1">
         {displayedSignatures.map((signature: CardWish) => (
-          <Signature signature={signature} />
+          <Signature signature={signature} admin={admin} />
         ))}
       </h1>
       <div className="mx-2 mb-2 flex flex-row items-center justify-between">
@@ -59,7 +68,36 @@ const Signatures = ({ signatures }: { signatures: CardWish[] }) => {
   );
 };
 
-const Signature = (props: { signature: CardWish }) => {
+const Signature = (props: { signature: CardWish; admin?: boolean }) => {
+  const Delete = () => {
+    const ctx = api.useContext();
+
+    const { mutate } = api.cards.deleteWish.useMutation({
+      onSuccess: () => {
+        void ctx.cards.fetch.invalidate({
+          cardId: props.signature.cardId,
+        });
+
+        toast.success("Successfully removed wish");
+      },
+    });
+
+    if (!props.admin) return <></>;
+    return (
+      <button
+        className="btn btn-primary btn-sm w-12 rounded-lg px-3"
+        onClick={() => {
+          mutate({
+            cardId: props.signature.cardId,
+            wishId: props.signature.id,
+          });
+        }}
+      >
+        <Trash />
+      </button>
+    );
+  };
+
   return (
     <div className="flex flex-row" key={props.signature.id}>
       <img
@@ -76,6 +114,9 @@ const Signature = (props: { signature: CardWish }) => {
         >
           {props.signature.text}
         </button>
+        <div className="space-x-1">
+          <Delete />
+        </div>
       </div>
     </div>
   );
