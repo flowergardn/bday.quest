@@ -47,7 +47,21 @@ export const cardRouter = createTRPCRouter({
       return card;
     }),
 
-  fetchAll: privateProcedure.query(async ({ ctx, input }) => {
+  delete: privateProcedure
+    .input(
+      z.object({
+        cardId: z.string().cuid(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db.cards.delete({
+        where: {
+          id: input.cardId,
+        },
+      });
+    }),
+
+  fetchAll: privateProcedure.query(async ({ ctx }) => {
     return await ctx.db.cards.findMany({
       where: {
         creatorId: ctx.userId,

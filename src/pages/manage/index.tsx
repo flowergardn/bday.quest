@@ -2,7 +2,9 @@ import { Cards } from "@prisma/client";
 import Head from "next/head";
 import { Cake, Calandar, Pen, Trash } from "~/components/Icons";
 import Navbar from "~/components/Navbar";
+import Link from "next/link";
 import { api } from "~/utils/api";
+import toast from "react-hot-toast";
 
 const dayjs = require("dayjs");
 const relativeTime = require("dayjs/plugin/relativeTime");
@@ -50,6 +52,29 @@ export default function ManageCards() {
       );
     };
 
+    const DeleteCard = () => {
+      const ctx = api.useContext();
+
+      const { mutate } = api.cards.delete.useMutation({
+        onSuccess: () => {
+          void ctx.cards.fetchAll.invalidate();
+          toast.success("Successfully deleted");
+        },
+      });
+      return (
+        <button
+          className="btn btn-sm"
+          onClick={() => {
+            mutate({
+              cardId: props.card.id,
+            });
+          }}
+        >
+          <Trash />
+        </button>
+      );
+    };
+
     return (
       <div className="card w-full max-w-sm shrink-0 border p-3">
         <article className="prose mb-6">
@@ -61,11 +86,11 @@ export default function ManageCards() {
         </article>
         <div className="mt-6">
           <button className="btn btn-sm mr-4">
-            <Pen />
+            <Link href={`/manage/${props.card.id}`}>
+              <Pen />
+            </Link>
           </button>
-          <button className="btn btn-sm">
-            <Trash />
-          </button>
+          <DeleteCard />
         </div>
       </div>
     );
