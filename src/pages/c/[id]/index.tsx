@@ -1,4 +1,5 @@
 import type { GetStaticProps, NextPage } from "next";
+
 import Navbar from "~/components/Navbar";
 import { generateSSGHelper } from "~/server/api/helpers/ssgHelper";
 import { api } from "~/utils/api";
@@ -36,15 +37,15 @@ const CardPage: NextPage<{ id: string }> = ({ id }) => {
       cardId: id,
     });
 
-    if (wishesLoading) return <></>;
-    if (wishError || !data) return <></>;
+    if (wishError) return <></>;
+    const canShow = !wishesLoading && !wishError && data;
 
     return (
       <>
         <article className="prose">
           <h2>Wishes</h2>
         </article>
-        <Signatures signatures={data} />
+        {canShow ? <Signatures signatures={data} /> : <p>Loading...</p>}
         <Link href={`/c/${id}/sign`}>
           <button className="btn btn-primary">Create</button>
         </Link>
