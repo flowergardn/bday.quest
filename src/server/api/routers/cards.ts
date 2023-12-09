@@ -155,7 +155,7 @@ export const cardRouter = createTRPCRouter({
           cardId: input.cardId,
         },
         orderBy: {
-          createdAt: "asc",
+          createdAt: "desc",
         },
       });
 
