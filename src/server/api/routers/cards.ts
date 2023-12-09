@@ -16,6 +16,24 @@ export const cardRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      // Creates the user if it doesn't exist
+      // Could probably use clerk webhooks, but
+      // this is more of a solid approach.
+
+      const user = await ctx.db.user.findUnique({
+        where: {
+          id: ctx.userId,
+        },
+      });
+
+      if (!user) {
+        await ctx.db.user.create({
+          data: {
+            id: ctx.userId,
+          },
+        });
+      }
+
       const card = await ctx.db.cards.create({
         data: {
           birthday: input.birthday,
