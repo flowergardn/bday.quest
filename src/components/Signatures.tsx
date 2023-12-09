@@ -37,7 +37,7 @@ const Signatures = ({
     <div className="flex h-full w-full flex-col justify-between">
       <h1 className="ml-2 mt-2 space-y-1">
         {displayedSignatures.map((signature: CardWish) => (
-          <Signature signature={signature} admin={admin} />
+          <Signature signature={signature} admin={admin} key={signature.id} />
         ))}
       </h1>
       <div className="mx-2 mb-2 flex flex-row items-center justify-between">

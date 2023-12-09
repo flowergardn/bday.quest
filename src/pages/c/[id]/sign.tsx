@@ -5,12 +5,15 @@ import { generateSSGHelper } from "~/server/api/helpers/ssgHelper";
 import { api } from "~/utils/api";
 import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
+import { useUser } from "@clerk/nextjs";
 
 type FormValues = {
   message: string;
 };
 
 const CardPage: NextPage<{ id: string }> = ({ id }) => {
+  const { isLoaded, user } = useUser();
+
   const {
     register,
     formState: { errors },
@@ -35,6 +38,10 @@ const CardPage: NextPage<{ id: string }> = ({ id }) => {
       location.href = `/c/${id}`;
     },
   });
+
+  if (isLoaded && !user) {
+    location.href = `/c/${id}`;
+  }
 
   if (cardLoading) return <></>;
   if (cardError || !data) return <></>;

@@ -1,7 +1,11 @@
 import { z } from "zod";
 import { clerkClient } from "@clerk/nextjs";
 
-import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  privateProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 import type CardWish from "~/interfaces/CardWish";
 import { TRPCError } from "@trpc/server";
 
@@ -91,7 +95,7 @@ export const cardRouter = createTRPCRouter({
       });
     }),
 
-  fetch: privateProcedure
+  fetch: publicProcedure
     .input(
       z.object({
         cardId: z.string().cuid(),
@@ -139,7 +143,7 @@ export const cardRouter = createTRPCRouter({
     });
   }),
 
-  getWishes: privateProcedure
+  getWishes: publicProcedure
     .input(
       z.object({
         cardId: z.string().cuid(),
