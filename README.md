@@ -4,7 +4,7 @@ The mission of `bday.quest` is to allow users to create birthday cards, where pe
 
 ## Tech stack
 
-https://bday.quest/ uses a small amount of tech to make this all possible. Firstly, made with the [T3 Stack](https://create.t3.gg/en/introduction#the-t3-stack).
+`bday.quest` uses a small amount of tech to make this all possible. Firstly, made with the [T3 Stack](https://create.t3.gg/en/introduction#the-t3-stack).
 
 - Next.js
 - Prisma
