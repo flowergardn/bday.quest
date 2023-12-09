@@ -1,4 +1,4 @@
-import { Cards } from "@prisma/client";
+import type { Cards } from "@prisma/client";
 import Head from "next/head";
 import { Cake, Calandar, Pen, Trash } from "~/components/Icons";
 import Navbar from "~/components/Navbar";
@@ -6,8 +6,8 @@ import Link from "next/link";
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
 
-const dayjs = require("dayjs");
-const relativeTime = require("dayjs/plugin/relativeTime");
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 
 export default function ManageCards() {
