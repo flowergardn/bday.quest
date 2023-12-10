@@ -44,7 +44,7 @@ const ManageCard: NextPage<{ id: string }> = ({ id }) => {
       </BasePage>
     );
 
-  if (cardError || !data) {
+  if (cardError ?? !data) {
     toast.error(cardError?.message ?? "");
     return (
       <BasePage>
