@@ -2,10 +2,10 @@ import type { GetStaticProps, NextPage } from "next";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import BasePage from "~/components/BasePage";
 import { Textbox } from "~/components/EditCard";
 import type { CardDataValues } from "~/components/EditCard";
-import Meta from "~/components/Meta";
-import Navbar from "~/components/Navbar";
+import Loader from "~/components/Loader";
 import Signatures from "~/components/Signatures";
 import { generateSSGHelper } from "~/server/api/helpers/ssgHelper";
 import { api } from "~/utils/api";
@@ -35,10 +35,27 @@ const ManageCard: NextPage<{ id: string }> = ({ id }) => {
     },
   });
 
-  if (cardLoading) return <></>;
-  if (isCardError || !data) {
+  if (cardLoading)
+    return (
+      <BasePage>
+        <main className="flex min-h-screen items-center justify-center bg-base-100">
+          <Loader />
+        </main>
+      </BasePage>
+    );
+
+  if (cardError || !data) {
     toast.error(cardError?.message ?? "");
-    return <></>;
+    return (
+      <BasePage>
+        <main className="flex min-h-screen items-center justify-center bg-base-100">
+          <article className="prose">
+            <h2>Error loading mangement settings</h2>
+            <p>{cardError?.message ?? ""}</p>
+          </article>
+        </main>
+      </BasePage>
+    );
   }
 
   const onSubmit: SubmitHandler<CardDataValues> = (data) => {
@@ -57,7 +74,7 @@ const ManageCard: NextPage<{ id: string }> = ({ id }) => {
       cardId: id,
     });
 
-    if (wishesLoading) return <></>;
+    const canShow = !wishesLoading && !wishError && data;
     if (wishError || !data) return <></>;
 
     return (
@@ -65,16 +82,13 @@ const ManageCard: NextPage<{ id: string }> = ({ id }) => {
         <article className="prose">
           <h2>Wishes</h2>
         </article>
-        <Signatures signatures={data} admin={true} />
+        {canShow ? <Signatures signatures={data} admin={true} /> : <Loader />}
       </>
     );
   };
 
   return (
-    <>
-      <Meta />
-
-      <Navbar />
+    <BasePage>
       <div className="hero flex min-h-screen items-center justify-center  bg-base-200">
         <div className="flex">
           <div className="card w-full max-w-sm shrink-0 bg-base-100 shadow-2xl">
@@ -104,7 +118,7 @@ const ManageCard: NextPage<{ id: string }> = ({ id }) => {
           </div>
         </div>
       </div>
-    </>
+    </BasePage>
   );
 };
 

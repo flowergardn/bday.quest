@@ -6,6 +6,8 @@ import { api } from "~/utils/api";
 import Signatures from "~/components/Signatures";
 import Link from "next/link";
 import Meta from "~/components/Meta";
+import Loader from "~/components/Loader";
+import { PropsWithChildren } from "react";
 
 const CardPage: NextPage<{ id: string }> = ({ id }) => {
   const {
@@ -16,8 +18,39 @@ const CardPage: NextPage<{ id: string }> = ({ id }) => {
     cardId: id,
   });
 
-  if (cardLoading) return <></>;
-  if (cardError || !data) return <></>;
+  const BasePage = (props: PropsWithChildren) => {
+    return (
+      <>
+        <Meta
+          title="Sign this card | bday.quest (beta)"
+          description={data ? data.description : ""}
+        />
+        <Navbar />
+        {props.children}
+      </>
+    );
+  };
+
+  if (cardLoading)
+    return (
+      <BasePage>
+        <main className="flex min-h-screen items-center justify-center bg-base-100">
+          <Loader />
+        </main>
+      </BasePage>
+    );
+
+  if (cardError || !data)
+    return (
+      <BasePage>
+        <main className="flex min-h-screen items-center justify-center bg-base-100">
+          <article className="prose">
+            <h2>Error loading card</h2>
+            <p>Try again later :(</p>
+          </article>
+        </main>
+      </BasePage>
+    );
 
   const CardInfo = () => {
     return (
@@ -45,7 +78,7 @@ const CardPage: NextPage<{ id: string }> = ({ id }) => {
         <article className="prose">
           <h2>Wishes</h2>
         </article>
-        {canShow ? <Signatures signatures={data} /> : <p>Loading...</p>}
+        {canShow ? <Signatures signatures={data} /> : <Loader />}
         <Link href={`/c/${id}/sign`}>
           <button className="btn btn-primary">Create</button>
         </Link>
@@ -54,12 +87,7 @@ const CardPage: NextPage<{ id: string }> = ({ id }) => {
   };
 
   return (
-    <>
-      <Meta
-        title="Sign this card | bday.quest (beta)"
-        description={data.description}
-      />
-      <Navbar />
+    <BasePage>
       <div className="hero flex min-h-screen flex-col items-center bg-base-100">
         <div className="card mb-12 mt-20 w-full max-w-sm shrink-0  p-6 shadow-2xl">
           <CardInfo />
@@ -68,7 +96,7 @@ const CardPage: NextPage<{ id: string }> = ({ id }) => {
           <CardWishes />
         </div>
       </div>
-    </>
+    </BasePage>
   );
 };
 

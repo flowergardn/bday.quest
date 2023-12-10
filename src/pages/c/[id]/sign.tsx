@@ -1,11 +1,11 @@
 import type { GetStaticProps, NextPage } from "next";
-import Navbar from "~/components/Navbar";
 import { generateSSGHelper } from "~/server/api/helpers/ssgHelper";
 import { api } from "~/utils/api";
 import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
 import { useUser } from "@clerk/nextjs";
-import Meta from "~/components/Meta";
+import Loader from "~/components/Loader";
+import BasePage from "~/components/BasePage";
 
 type FormValues = {
   message: string;
@@ -45,8 +45,26 @@ const CardPage: NextPage<{ id: string }> = ({ id }) => {
     )}`;
   }
 
-  if (cardLoading) return <></>;
-  if (cardError || !data) return <></>;
+  if (cardLoading)
+    return (
+      <BasePage>
+        <main className="flex min-h-screen items-center justify-center bg-base-100">
+          <Loader />
+        </main>
+      </BasePage>
+    );
+
+  if (cardError || !data)
+    return (
+      <BasePage>
+        <main className="flex min-h-screen items-center justify-center bg-base-100">
+          <article className="prose">
+            <h2>Error loading card</h2>
+            <p>Try again later :(</p>
+          </article>
+        </main>
+      </BasePage>
+    );
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     mutate({
@@ -110,10 +128,7 @@ const CardPage: NextPage<{ id: string }> = ({ id }) => {
   };
 
   return (
-    <>
-      <Meta />
-
-      <Navbar />
+    <BasePage>
       <div className="hero flex min-h-screen flex-col items-center bg-base-100">
         <div className="card mb-12 mt-20 w-full max-w-sm shrink-0  p-6 shadow-2xl">
           <CardInfo />
@@ -122,7 +137,7 @@ const CardPage: NextPage<{ id: string }> = ({ id }) => {
           <CreateWish />
         </div>
       </div>
-    </>
+    </BasePage>
   );
 };
 
