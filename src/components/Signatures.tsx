@@ -19,10 +19,10 @@ const Signatures = ({
     page * signaturesPerPage + signaturesPerPage,
   );
 
-  const backStyle = page !== 0 ? "bg-pink-300" : "invisible";
+  const backStyle = page !== 0 ? "bg-primary" : "invisible";
   const nextStyle =
     page < Math.ceil(signatures.length / signaturesPerPage) - 1
-      ? "bg-pink-300"
+      ? "bg-primary"
       : "invisible";
 
   if (displayedSignatures.length === 0) {
