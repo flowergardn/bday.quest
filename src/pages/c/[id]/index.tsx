@@ -80,7 +80,7 @@ const CardPage: NextPage<{ id: string }> = ({ id }) => {
         </article>
         {canShow ? <Signatures signatures={data} /> : <Loader />}
         <Link href={`/c/${id}/sign`}>
-          <button className="btn btn-primary">Create</button>
+          <button className="btn btn-primary">Sign</button>
         </Link>
       </>
     );
