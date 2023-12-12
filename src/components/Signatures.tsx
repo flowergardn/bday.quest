@@ -33,6 +33,8 @@ const Signatures = ({
     );
   }
 
+  const sharedBtnStyle = "h-10 w-12 rounded-lg p-2 lg:w-fit text-white";
+
   return (
     <div className="flex h-full w-full flex-col justify-between">
       <h1 className="ml-2 mt-2 space-y-1">
@@ -42,7 +44,7 @@ const Signatures = ({
       </h1>
       <div className="mx-2 mb-2 flex flex-row items-center justify-between">
         <button
-          className={`mt-2 h-10 w-12 rounded-lg p-2 lg:w-fit ${backStyle}`}
+          className={`mt-2 ${sharedBtnStyle} ${backStyle}`}
           onClick={() => setPage(Math.max(0, page - 1))}
         >
           ◄
@@ -51,7 +53,7 @@ const Signatures = ({
           {page + 1} / {Math.ceil(signatures.length / signaturesPerPage)}
         </p>
         <button
-          className={`h-10 w-12 rounded-lg p-2 lg:w-fit ${nextStyle}`}
+          className={`${sharedBtnStyle} ${nextStyle}`}
           onClick={() =>
             setPage(
               Math.min(
