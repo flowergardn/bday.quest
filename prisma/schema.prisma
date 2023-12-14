@@ -31,6 +31,7 @@ model Cards {
   description String @default("")
   createdAt DateTime @default(now())
   birthday DateTime
+  paused Boolean @default(false)
 
   User User @relation(fields: [creatorId], references: [id])
 

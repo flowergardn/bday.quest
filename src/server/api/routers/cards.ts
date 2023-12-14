@@ -9,6 +9,9 @@ import {
 import type CardWish from "~/interfaces/CardWish";
 import { TRPCError } from "@trpc/server";
 
+const checkFalsy = (...values: (string | boolean | null | undefined)[]) =>
+  values.every((value) => value === null);
+
 export const cardRouter = createTRPCRouter({
   create: privateProcedure
     .input(
@@ -58,6 +61,7 @@ export const cardRouter = createTRPCRouter({
         cardId: z.string().cuid(),
         title: z.string().nullish(),
         description: z.string().nullish(),
+        paused: z.boolean().nullish(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -73,19 +77,21 @@ export const cardRouter = createTRPCRouter({
           code: "NOT_FOUND",
         });
 
-      if (!input.title && !input.description)
+      if (checkFalsy(input.title, input.description, input.paused))
         throw new TRPCError({
           code: "BAD_REQUEST",
-          cause: "Either a title or description should be specified.",
+          cause: "No valid options specified.",
         });
 
       const update: {
         title?: string;
         description?: string;
+        paused?: boolean;
       } = {};
 
       if (input.title) update.title = input.title;
       if (input.description) update.description = input.description;
+      if (input.paused !== null) update.paused = input.paused;
 
       return await ctx.db.cards.update({
         where: {
@@ -182,6 +188,18 @@ export const cardRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      const cardInfo = await ctx.db.cards.findUnique({
+        where: {
+          id: input.cardId,
+        },
+      });
+
+      if (!cardInfo) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          cause: "You cannot send a wish to an inexistent card!",
+        });
+      }
       const hasWish = await ctx.db.wishes.findFirst({
         where: {
           cardId: input.cardId,
@@ -189,11 +207,19 @@ export const cardRouter = createTRPCRouter({
         },
       });
 
-      if (hasWish)
+      if (hasWish) {
         throw new TRPCError({
           code: "BAD_REQUEST",
           cause: "You've already submitted a wish to this card!",
         });
+      }
+
+      if (cardInfo.paused) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          cause: "Wishes can no longer be submitted to this card!",
+        });
+      }
 
       return await ctx.db.wishes.create({
         data: {

@@ -12,7 +12,7 @@ import { api } from "~/utils/api";
 
 const ManageCard: NextPage<{ id: string }> = ({ id }) => {
   const {
-    data,
+    data: cardData,
     isLoading: cardLoading,
     isError: isCardError,
     error: cardError,
@@ -44,7 +44,7 @@ const ManageCard: NextPage<{ id: string }> = ({ id }) => {
       </BasePage>
     );
 
-  if (cardError ?? !data) {
+  if (cardError ?? !cardData) {
     toast.error(cardError?.message ?? "");
     return (
       <BasePage>
@@ -100,14 +100,31 @@ const ManageCard: NextPage<{ id: string }> = ({ id }) => {
                 title="Title"
                 type="title"
                 register={register}
-                placeholder={data.title}
+                placeholder={cardData.title}
               />
               <Textbox
                 title="Description"
                 type="description"
                 register={register}
-                placeholder={data.description}
+                placeholder={cardData.description}
               />
+              <Textbox
+                title="Description"
+                type="description"
+                register={register}
+                placeholder={cardData.description}
+              />
+              {/* note: perhaps we should convert this into a component, since this is copied from our create code. */}
+              <div className="form-control">
+                <label className="label cursor-pointer">
+                  <span className="label-text">Pause wishes?</span>
+                  <input
+                    type="checkbox"
+                    className="checkbox"
+                    {...register("paused")}
+                  />
+                </label>
+              </div>
               <div className="form-control mt-6">
                 <button className="btn btn-primary">Edit</button>
               </div>

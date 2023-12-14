@@ -11,7 +11,7 @@ import { PropsWithChildren } from "react";
 
 const CardPage: NextPage<{ id: string }> = ({ id }) => {
   const {
-    data,
+    data: cardData,
     isLoading: cardLoading,
     isError: cardError,
   } = api.cards.fetch.useQuery({
@@ -23,7 +23,7 @@ const CardPage: NextPage<{ id: string }> = ({ id }) => {
       <>
         <Meta
           title="Sign this card | bday.quest (beta)"
-          description={data ? data.description : ""}
+          description={cardData ? cardData.description : ""}
         />
         <Navbar />
         {props.children}
@@ -40,7 +40,7 @@ const CardPage: NextPage<{ id: string }> = ({ id }) => {
       </BasePage>
     );
 
-  if (cardError || !data)
+  if (cardError || !cardData)
     return (
       <BasePage>
         <main className="flex min-h-screen items-center justify-center bg-base-100">
@@ -55,8 +55,8 @@ const CardPage: NextPage<{ id: string }> = ({ id }) => {
   const CardInfo = () => {
     return (
       <article className="prose">
-        <h1>{data.title}</h1>
-        <p>{data.description}</p>
+        <h1>{cardData.title}</h1>
+        <p>{cardData.description}</p>
       </article>
     );
   };
@@ -73,15 +73,34 @@ const CardPage: NextPage<{ id: string }> = ({ id }) => {
     if (wishError) return <></>;
     const canShow = !wishesLoading && !wishError && data;
 
+    const SignCard = () => {
+      if (!canShow) return <></>;
+
+      if (cardData.paused) {
+        return (
+          <div
+            className="tooltip tooltip-bottom"
+            data-tip="Wishes are disabled"
+          >
+            <button className="btn btn-disabled">Sign</button>
+          </div>
+        );
+      }
+
+      return (
+        <Link href={`/c/${id}/sign`}>
+          <button className="btn btn-primary">Sign</button>
+        </Link>
+      );
+    };
+
     return (
       <>
         <article className="prose">
           <h2>Wishes</h2>
         </article>
         {canShow ? <Signatures signatures={data} /> : <Loader />}
-        <Link href={`/c/${id}/sign`}>
-          <button className="btn btn-primary">Sign</button>
-        </Link>
+        <SignCard />
       </>
     );
   };

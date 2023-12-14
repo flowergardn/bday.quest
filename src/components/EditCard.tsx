@@ -5,6 +5,7 @@ export type CardDataValues = {
   description: string;
   birthday: string;
   showAge: boolean;
+  paused?: boolean;
 };
 // used for type-checking in our textbox component
 type CardDataTypes = "title" | "description" | "birthday";
