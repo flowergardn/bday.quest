@@ -134,6 +134,18 @@ export const cardRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      const card = await ctx.db.cards.findUnique({
+        where: {
+          id: input.cardId,
+          creatorId: ctx.userId,
+        },
+      });
+
+      if (!card)
+        throw new TRPCError({
+          code: "NOT_FOUND",
+        });
+
       return await ctx.db.cards.delete({
         where: {
           id: input.cardId,
