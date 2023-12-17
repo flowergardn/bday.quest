@@ -24,6 +24,8 @@ export default {
           primary: "pink",
           "base-100": "#141414",
           secondary: "teal",
+          "--rounded-btn": "1.9rem",
+          "--tab-radius": "0.7rem",
         },
       },
     ],
