@@ -38,7 +38,7 @@ const ManageCard: NextPage<{ id: string }> = ({ id }) => {
   if (cardLoading)
     return (
       <BasePage>
-        <main className="flex min-h-screen items-center justify-center bg-base-100">
+        <main className="flex min-h-[calc(100vh-64px)] items-center justify-center bg-base-100">
           <Loader />
         </main>
       </BasePage>
@@ -48,7 +48,7 @@ const ManageCard: NextPage<{ id: string }> = ({ id }) => {
     toast.error(cardError?.message ?? "");
     return (
       <BasePage>
-        <main className="flex min-h-screen items-center justify-center bg-base-100">
+        <main className="flex min-h-[calc(100vh-64px)] items-center justify-center bg-base-100">
           <article className="prose">
             <h2>Error loading mangement settings</h2>
             <p>{cardError?.message ?? ""}</p>
@@ -89,7 +89,7 @@ const ManageCard: NextPage<{ id: string }> = ({ id }) => {
 
   return (
     <BasePage>
-      <div className="hero flex min-h-screen items-center justify-center  bg-base-200">
+      <div className="hero flex min-h-[calc(100vh-64px)] items-center justify-center  bg-base-200">
         <div className="flex">
           <div className="card w-full max-w-sm shrink-0 bg-base-100 shadow-2xl">
             <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
