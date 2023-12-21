@@ -122,7 +122,7 @@ export default function ManageCards() {
       <Meta title="Manage | bday.quest (beta)" />
 
       <Navbar />
-      <div className="hero flex min-h-screen flex-col items-center bg-base-100">
+      <div className="hero flex min-h-[calc(100vh-64px)] flex-col items-center bg-base-100">
         <Cards />
       </div>
     </>

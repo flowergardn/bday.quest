@@ -48,7 +48,7 @@ const CardPage: NextPage<{ id: string }> = ({ id }) => {
   if (cardLoading)
     return (
       <BasePage>
-        <main className="flex min-h-screen items-center justify-center bg-base-100">
+        <main className="flex min-h-[calc(100vh-64px)] items-center justify-center bg-base-100">
           <Loader />
         </main>
       </BasePage>
@@ -57,7 +57,7 @@ const CardPage: NextPage<{ id: string }> = ({ id }) => {
   if (cardError || !data)
     return (
       <BasePage>
-        <main className="flex min-h-screen items-center justify-center bg-base-100">
+        <main className="flex min-h-[calc(100vh-64px)] items-center justify-center bg-base-100">
           <article className="prose">
             <h2>Error loading card</h2>
             <p>Try again later :(</p>
@@ -129,7 +129,7 @@ const CardPage: NextPage<{ id: string }> = ({ id }) => {
 
   return (
     <BasePage>
-      <div className="hero flex min-h-screen flex-col items-center bg-base-100">
+      <div className="hero flex min-h-[calc(100vh-64px)] flex-col items-center bg-base-100">
         <div className="card mb-12 mt-20 w-full max-w-sm shrink-0  p-6 shadow-2xl">
           <CardInfo />
         </div>

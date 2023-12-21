@@ -33,7 +33,7 @@ export default function Home() {
       <Meta title="bday.quest (beta)" />
 
       <Navbar />
-      <div className="hero min-h-screen bg-base-200">
+      <div className="hero min-h-[calc(100vh-64px)] bg-base-200">
         <div className="hero-content text-center">
           <div className="max-w-md">
             <h1 className="text-5xl font-bold">bday.quest</h1>

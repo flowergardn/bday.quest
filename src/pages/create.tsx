@@ -24,7 +24,7 @@ export default function CreateCard() {
       <Meta title="Create a card | bday.quest (beta)" />
 
       <Navbar />
-      <div className="hero min-h-screen bg-base-200">
+      <div className="hero min-h-[calc(100vh-64px)] bg-base-200">
         <div className="card w-full max-w-sm shrink-0 bg-base-100 shadow-2xl">
           <form
             className="card-body"
