@@ -13,10 +13,11 @@ export default function CreateCard() {
     showAge: boolean;
   };
 
-  const { register, handleSubmit } = useForm<CardDataValues>();
+  const { register, handleSubmit, setError, formState: { errors } } = useForm<CardDataValues>();
 
   const { mutate } = api.cards.create.useMutation({
     onSuccess: (data) => (location.href = `/c/${data.id}`),
+
   });
 
   return (
@@ -29,7 +30,10 @@ export default function CreateCard() {
           <form
             className="card-body"
             onSubmit={handleSubmit((data) => {
-              data.birthday = dayjs(data.birthday).toISOString();
+              let bday = dayjs(data.birthday)
+              if(bday.isAfter(dayjs())) setError("birthday", {type: "input", message: "Birthdate cannot be in the future."})
+                else if(dayjs().subtract(200, "year").isAfter(bday)) setError("birthday", {type: "input", message: "Person really over 200 years old?. [Placeholder]"})
+              data.birthday = bday.toISOString();
               mutate(data);
             })}
           >
@@ -54,6 +58,8 @@ export default function CreateCard() {
               register={register}
               required
             />
+              <div className={"text-red-500"}>{errors.birthday && errors.birthday.message}</div>
+
             <div className="form-control">
               <label className="label cursor-pointer">
                 <span className="label-text">Show age?</span>
