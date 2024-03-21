@@ -8,7 +8,6 @@ import toast from "react-hot-toast";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Meta from "~/components/Meta";
-import BasePage from "~/components/BasePage";
 import Loader from "~/components/Loader";
 dayjs.extend(relativeTime);
 
