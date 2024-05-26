@@ -1,36 +1,32 @@
 "use client";
 
-import { ArrowLeftIcon, ArrowRightIcon, TrashIcon } from "lucide-react";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  PencilIcon,
+  TrashIcon,
+} from "lucide-react";
 import { useState } from "react";
 import CardWish from "~/interfaces/CardWish";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "~/components/ui/alert-dialog";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "~/components/ui/tooltip";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Button } from "../ui/button";
+import { EditWishDialog } from "./manage";
+import CardData from "~/interfaces/CardData";
+import { deleteWish } from "~/server/actions/deleteWish";
+import { toast } from "sonner";
 
 const Signatures = ({
   signatures,
   currentUser,
-  admin,
+  card,
 }: {
   signatures: CardWish[];
+  card: CardData;
   currentUser: string | null;
-  admin?: boolean;
 }) => {
   const [page, setPage] = useState(0);
 
-  const signaturesPerPage = 2;
+  const signaturesPerPage = 3;
   const displayedSignatures = signatures.slice(
     page * signaturesPerPage,
     page * signaturesPerPage + signaturesPerPage,
@@ -58,39 +54,49 @@ const Signatures = ({
   const totalPages = Math.ceil(signatures.length / signaturesPerPage);
 
   const Signature = (props: { signature: CardWish; admin?: boolean }) => {
-    const Delete = () => {
-      if (!props.admin) return <></>;
-      return (
-        <button className="btn btn-primary btn-sm w-12 rounded-lg px-3">
-          <TrashIcon />
-        </button>
-      );
-    };
-
     const SignatureText = () => {
-      if (props.signature.creatorId == currentUser) {
+      const isWishCreator = props.signature.creatorId == currentUser;
+      const isCardCreator = card.creatorId == currentUser;
+
+      const Delete = () => {
+        if (!isCardCreator && !isWishCreator) return <></>;
+
+        const clientAction = async () => {
+          await deleteWish(props.signature.id);
+          toast("Wish deleted");
+          location.href = `/c/${card.id}`;
+        };
+
         return (
-          <AlertDialog>
-            <AlertDialogTrigger>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <p className="text-start">{props.signature.text}</p>
-                </TooltipTrigger>
-                <TooltipContent side="bottom">
-                  <p>Click to edit your wish</p>
-                </TooltipContent>
-              </Tooltip>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Edit your wish</AlertDialogTitle>
-                <AlertDialogDescription>soon :tm:</AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogAction>Continue</AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+          <form action={clientAction} className="inline-block">
+            <Button variant={"ghost"} size="sm" type="submit">
+              <TrashIcon />
+            </Button>
+          </form>
+        );
+      };
+
+      if (isWishCreator || isCardCreator) {
+        return (
+          <Popover>
+            <PopoverTrigger>
+              <p className="text-start">{props.signature.text}</p>
+            </PopoverTrigger>
+            <PopoverContent
+              className="w-fit space-x-4 bg-black/60"
+              side="right"
+            >
+              {isWishCreator && (
+                <EditWishDialog signature={props.signature}>
+                  <Button variant={"ghost"} size="sm">
+                    <PencilIcon />
+                  </Button>
+                </EditWishDialog>
+              )}
+
+              <Delete />
+            </PopoverContent>
+          </Popover>
         );
       }
       return <p className="text-start">{props.signature.text}</p>;
@@ -105,9 +111,6 @@ const Signatures = ({
         <div className="ml-2 flex w-[75%] flex-col text-[1rem] lg:w-[78%]">
           <b>{props.signature.username}</b>
           <SignatureText />
-          <div className="space-x-1">
-            <Delete />
-          </div>
         </div>
       </div>
     );
@@ -117,7 +120,7 @@ const Signatures = ({
     <div className="flex h-full w-full flex-col justify-between">
       <h1 className="ml-2 mt-2 space-y-1">
         {displayedSignatures.map((signature: CardWish) => (
-          <Signature signature={signature} admin={admin} key={signature.id} />
+          <Signature signature={signature} key={signature.id} />
         ))}
       </h1>
       <div className="mx-2 mb-2 flex flex-row items-center justify-between">

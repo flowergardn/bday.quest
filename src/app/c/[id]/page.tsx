@@ -1,6 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
-import Signatures from "~/components/signatures";
+import Signatures from "~/components/signatures/signatures";
 import { Button } from "~/components/ui/button";
 import { getCard, getWishes } from "~/server/db/queries";
 
@@ -45,7 +45,11 @@ export default async function CardView({
         </article>
       </div>
       <div className="mb-4 flex max-w-xl shrink-0 flex-col items-center p-6">
-        <Signatures currentUser={user.userId} signatures={wishes} />
+        <Signatures
+          currentUser={user.userId}
+          signatures={wishes}
+          card={cardData}
+        />
         <SignCard />
       </div>
     </div>
