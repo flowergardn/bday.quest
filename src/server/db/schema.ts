@@ -54,3 +54,24 @@ export const wishes = createTable("wishes", {
 export const user = createTable("user", {
   id: varchar("id").primaryKey(),
 });
+
+export interface User {
+  id: string;
+}
+
+export interface Card {
+  id: string;
+  creatorId: string;
+  title: string;
+  description: string;
+  birthday: Date;
+  paused: boolean;
+}
+
+export interface Wishes {
+  id: string;
+  creatorId: string;
+  cardId: string;
+  text: string;
+  createdAt: Date;
+}
