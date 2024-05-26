@@ -19,7 +19,7 @@ export default function HomePage() {
         <div className="max-w-md text-center">
           <h1 className="text-5xl font-bold">bday.quest</h1>
           <p className="py-6">
-            Birthday cards are awesome, let's virtualize them.
+            Birthday cards are awesome, let&apos;s virtualize them.
           </p>
           <Statistics />
         </div>

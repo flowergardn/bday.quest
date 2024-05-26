@@ -5,7 +5,6 @@ import { sql } from "drizzle-orm";
 import {
   boolean,
   pgTableCreator,
-  serial,
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";

@@ -4,7 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import { typeid } from "typeid-js";
 import { db } from "../db";
 import { cards } from "../db/schema";
-import CardData from "~/interfaces/CardData";
+import type CardData from "~/interfaces/CardData";
 
 export const createCard = async (formData: FormData) => {
   const { userId: creatorId } = auth();
@@ -18,7 +18,7 @@ export const createCard = async (formData: FormData) => {
   let cardData: CardData;
 
   try {
-    let card = await db
+    const card = await db
       .insert(cards)
       .values({
         id,
