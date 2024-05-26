@@ -44,7 +44,7 @@ export const wishes = createTable("wishes", {
   cardId: varchar("cardId")
     .notNull()
     .references(() => cards.id, {
-      onDelete: "no action",
+      onDelete: "cascade",
     }),
   text: varchar("text").notNull(),
   createdAt: timestamp("createdAt")
