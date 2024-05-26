@@ -10,7 +10,7 @@ export default async function CardView({
   params: { id: string };
 }) {
   const cardData = await getCard(cardId);
-  const user = await auth();
+  const user = auth();
 
   if (!cardData) {
     return <div>Card not found</div>;
