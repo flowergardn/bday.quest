@@ -3,7 +3,8 @@ import { db } from ".";
 import { cards as cardSchema, wishes as wishSchema } from "./schema";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import type CardWish from "~/interfaces/CardWish";
-import CardData, { CardDataWithWishes } from "~/interfaces/CardData";
+import type CardData from "~/interfaces/CardData";
+import { type CardDataWithWishes } from "~/interfaces/CardData";
 
 export async function getCard(id: string): Promise<CardData> {
   const cards = await db.select().from(cardSchema).where(eq(cardSchema.id, id));

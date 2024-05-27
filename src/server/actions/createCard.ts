@@ -36,9 +36,9 @@ export const createCard = async (formData: FormData) => {
       })
       .returning();
     cardData = card[0] as CardData;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.log(error);
-    throw new Error("Error: " + error.message);
+    throw new Error("There was an error creating the card");
   }
 
   return cardData;

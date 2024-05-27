@@ -5,7 +5,7 @@ import { Input } from "~/components/ui/input";
 import React from "react";
 import { createCard } from "~/server/actions/createCard";
 import { toast } from "sonner";
-import CardData from "~/interfaces/CardData";
+import type CardData from "~/interfaces/CardData";
 
 export default function Form() {
   const clientFunction = async (formData: FormData) => {
@@ -13,8 +13,8 @@ export default function Form() {
 
     try {
       cardResponse = await createCard(formData);
-    } catch (error: any) {
-      toast(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) toast(error.message);
       return;
     }
 
