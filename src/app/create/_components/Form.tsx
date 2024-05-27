@@ -21,7 +21,7 @@ export default function Form() {
         <Input placeholder="Title" className="py-2" name="title" />
         <Input placeholder="Description" className="py-2" name="description" />
       </section>
-      <div className="float-right space-x-4">
+      <div className="float-right mt-4">
         <Button type="submit">Submit</Button>
       </div>
     </form>

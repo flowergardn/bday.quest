@@ -20,7 +20,7 @@ export default function Form(props: { cardId: string }) {
       <section className="space-y-2">
         <Input placeholder="Your wish" className="py-2" name="wish" />
       </section>
-      <div className="float-right space-x-4">
+      <div className="float-right mt-4">
         <Button type="submit">Submit</Button>
       </div>
     </form>

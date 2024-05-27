@@ -28,11 +28,11 @@ export default function HomePage() {
             <Link href="/create">
               <Button size="lg">Create</Button>
             </Link>
-            <SignOutButton>
+            <Link href="/manage">
               <Button size="lg" variant="secondary">
-                Sign out
+                Manage
               </Button>
-            </SignOutButton>
+            </Link>
           </SignedIn>
           <SignedOut>
             <SignInButton>
