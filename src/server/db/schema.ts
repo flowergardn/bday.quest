@@ -25,12 +25,12 @@ export const cards = createTable("cards", {
       onDelete: "no action",
     }),
   title: varchar("title").notNull(),
-  description: varchar("description").default(""),
+  description: varchar("description").default("").notNull(),
   createdAt: timestamp("createdAt")
     .notNull()
     .default(sql`now()`),
   birthday: timestamp("birthday").notNull(),
-  paused: boolean("paused").default(false),
+  paused: boolean("paused").default(false).notNull(),
 });
 
 export const wishes = createTable("wishes", {
