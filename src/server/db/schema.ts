@@ -21,7 +21,7 @@ export const cards = createTable("cards", {
   id: varchar("id").primaryKey(),
   creatorId: varchar("creatorId")
     .notNull()
-    .references(() => user.id, {
+    .references(() => users.id, {
       onDelete: "no action",
     }),
   title: varchar("title").notNull(),
@@ -37,7 +37,7 @@ export const wishes = createTable("wishes", {
   id: varchar("id").primaryKey(),
   creatorId: varchar("creatorId")
     .notNull()
-    .references(() => user.id, {
+    .references(() => users.id, {
       onDelete: "no action",
     }),
   cardId: varchar("cardId")
@@ -51,7 +51,7 @@ export const wishes = createTable("wishes", {
     .default(sql`now()`),
 });
 
-export const user = createTable("user", {
+export const users = createTable("user", {
   id: varchar("id").primaryKey(),
 });
 

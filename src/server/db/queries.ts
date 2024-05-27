@@ -1,6 +1,11 @@
 import { desc, eq } from "drizzle-orm";
 import { db } from ".";
-import { cards as cardSchema, wishes as wishSchema } from "./schema";
+import {
+  User,
+  cards as cardSchema,
+  wishes as wishSchema,
+  users as userSchema,
+} from "./schema";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import type CardWish from "~/interfaces/CardWish";
 import type CardData from "~/interfaces/CardData";
@@ -71,4 +76,20 @@ export async function getCreatedCards(): Promise<CardDataWithWishes[]> {
   );
 
   return newCards;
+}
+
+export async function createUser(userId: string) {
+  const user: User = {
+    id: userId,
+  };
+  return user;
+}
+
+export async function getUser(userId: string): Promise<User | null> {
+  const user = await db
+    .select()
+    .from(userSchema)
+    .where(eq(userSchema.id, userId));
+  if (!user.length) return null;
+  return user[0] as User;
 }

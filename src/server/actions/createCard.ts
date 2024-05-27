@@ -5,6 +5,7 @@ import { typeid } from "typeid-js";
 import { db } from "../db";
 import { cards } from "../db/schema";
 import type CardData from "~/interfaces/CardData";
+import { createUser, getUser } from "../db/queries";
 
 export const createCard = async (formData: FormData) => {
   const { userId: creatorId } = auth();
@@ -12,6 +13,9 @@ export const createCard = async (formData: FormData) => {
   if (!creatorId) {
     throw new Error("You must be signed in to create a card");
   }
+
+  const user = await getUser(creatorId);
+  if (!user) await createUser(creatorId);
 
   const id = typeid("card").toString();
 
