@@ -44,7 +44,7 @@ const Signatures = ({
         <p className="text-center text-slate-300">
           No wishes could be found 😭
           <br />
-          Be the first to create a wish for this card!
+          Be the first to sign this card!
         </p>
       </article>
     );
