@@ -5,11 +5,19 @@ import { Input } from "~/components/ui/input";
 import React from "react";
 import { createCard } from "~/server/actions/createCard";
 import { toast } from "sonner";
+import CardData from "~/interfaces/CardData";
 
 export default function Form() {
   const clientFunction = async (formData: FormData) => {
-    const cardResponse = await createCard(formData);
-    toast("Card has been created.");
+    let cardResponse: CardData;
+
+    try {
+      cardResponse = await createCard(formData);
+    } catch (error: any) {
+      toast(error.message);
+      return;
+    }
+
     setTimeout(() => {
       location.href = `/c/${cardResponse.id}`;
     }, 1500);
@@ -20,6 +28,7 @@ export default function Form() {
       <section className="space-y-2">
         <Input placeholder="Title" className="py-2" name="title" />
         <Input placeholder="Description" className="py-2" name="description" />
+        <Input placeholder="Birthday" className="py-2" name="birthday" />
       </section>
       <div className="float-right mt-4">
         <Button type="submit">Submit</Button>

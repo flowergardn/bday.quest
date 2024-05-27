@@ -17,6 +17,12 @@ export const createCard = async (formData: FormData) => {
 
   let cardData: CardData;
 
+  const birthday = new Date(formData.get("birthday") as string);
+
+  if (isNaN(birthday.getTime())) {
+    throw new Error("That birthday is not a valid date");
+  }
+
   try {
     const card = await db
       .insert(cards)
@@ -25,14 +31,14 @@ export const createCard = async (formData: FormData) => {
         creatorId,
         title: formData.get("title") as string,
         description: formData.get("description") as string,
-        birthday: new Date(),
+        birthday,
         paused: false,
       })
       .returning();
     cardData = card[0] as CardData;
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
-    throw new Error("There was an error creating the card");
+    throw new Error("Error: " + error.message);
   }
 
   return cardData;
