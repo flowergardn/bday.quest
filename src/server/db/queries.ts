@@ -82,6 +82,7 @@ export async function createUser(userId: string) {
   const user: User = {
     id: userId,
   };
+  await db.insert(userSchema).values(user);
   return user;
 }
 
