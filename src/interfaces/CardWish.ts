@@ -1,4 +1,4 @@
-import { Wishes } from "~/server/db/schema";
+import { type Wishes } from "~/server/db/schema";
 
 export default interface CardWish extends Wishes {
   profilePicture: string;

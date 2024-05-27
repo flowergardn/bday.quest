@@ -7,11 +7,11 @@ import {
   TrashIcon,
 } from "lucide-react";
 import { useState } from "react";
-import CardWish from "~/interfaces/CardWish";
+import type CardWish from "~/interfaces/CardWish";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
 import { EditWishDialog } from "./manage";
-import CardData from "~/interfaces/CardData";
+import type CardData from "~/interfaces/CardData";
 import { deleteWish } from "~/server/actions/deleteWish";
 import { toast } from "sonner";
 

@@ -1,4 +1,4 @@
-import CardWish from "./CardWish";
+import type CardWish from "./CardWish";
 
 export default interface CardData {
   id: string;

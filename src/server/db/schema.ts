@@ -59,15 +59,6 @@ export interface User {
   id: string;
 }
 
-export interface Card {
-  id: string;
-  creatorId: string;
-  title: string;
-  description: string;
-  birthday: Date;
-  paused: boolean;
-}
-
 export interface Wishes {
   id: string;
   creatorId: string;

@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { Button } from "~/components/ui/button";
 import { deleteCard } from "~/server/actions/deleteCard";
 
-const Form = async (props: { cardId: string }) => {
+const Form = (props: { cardId: string }) => {
   const clientAction = async () => {
     toast("Deleting card...", {
       duration: Infinity,

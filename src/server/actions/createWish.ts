@@ -3,7 +3,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { typeid } from "typeid-js";
 import { db } from "../db";
-import { Wishes, wishes } from "../db/schema";
+import { type Wishes, wishes } from "../db/schema";
 
 export const createWish = async (formData: FormData, cardId: string) => {
   const { userId: creatorId } = auth();

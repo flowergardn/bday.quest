@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
-import { CardDataWithWishes } from "~/interfaces/CardData";
+import { type CardDataWithWishes } from "~/interfaces/CardData";
 import Link from "next/link";
 import Form from "./_components/Form";
 

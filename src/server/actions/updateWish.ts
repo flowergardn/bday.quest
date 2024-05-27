@@ -2,7 +2,7 @@
 
 import { db } from "~/server/db/";
 import { eq } from "drizzle-orm";
-import { Wishes, wishes as wishSchema } from "~/server/db/schema";
+import { type Wishes, wishes as wishSchema } from "~/server/db/schema";
 
 export const updateWish = async (
   wishId: string,

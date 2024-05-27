@@ -1,13 +1,13 @@
 import { desc, eq } from "drizzle-orm";
 import { db } from ".";
-import { Card, cards as cardSchema, wishes as wishSchema } from "./schema";
+import { cards as cardSchema, wishes as wishSchema } from "./schema";
 import { auth, clerkClient } from "@clerk/nextjs/server";
-import CardWish from "~/interfaces/CardWish";
-import CardData, { CardDataWithWishes } from "~/interfaces/CardData";
+import type CardWish from "~/interfaces/CardWish";
+import type CardData, { CardDataWithWishes } from "~/interfaces/CardData";
 
-export async function getCard(id: string): Promise<Card> {
+export async function getCard(id: string): Promise<CardData> {
   const cards = await db.select().from(cardSchema).where(eq(cardSchema.id, id));
-  return cards.shift() as Card;
+  return cards.shift() as CardData;
 }
 
 export async function getWishes(cardId: string) {
