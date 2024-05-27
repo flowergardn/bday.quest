@@ -11,10 +11,6 @@ The mission of `bday.quest` is to allow users to create birthday cards, where pe
 - Clerk
 - TailwindCSS
 
-## Roadmap
-
-This project is a bit far from finished, as this is just the start. [Click here](/ROADMAP.md) to view the roadmap of things I would like to _eventually_ implement.
-
 ## License
 
 https://bday.quest/ is licensed under the [Apache-2.0](/LICENSE.md) license.

@@ -90,6 +90,6 @@ export async function getUser(userId: string): Promise<User | null> {
     .select()
     .from(userSchema)
     .where(eq(userSchema.id, userId));
-  if (!user.length) return null;
+  if (user.length === 0) return null;
   return user[0] as User;
 }
