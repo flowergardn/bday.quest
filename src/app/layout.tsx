@@ -5,11 +5,35 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "~/components/ui/sonner";
 import { TooltipProvider } from "~/components/ui/tooltip";
 import Navbar from "~/components/navbar";
+import { Viewport } from "next";
 
 export const metadata = {
-  title: "bday.quest",
+  title: "bday.quest (beta)",
   description: "Create virtual birthday cards",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
+  openGraph: {
+    title: "bday.quest",
+    description: "Create virtual birthday cards",
+    url: "https://bday.quest",
+    siteName: "Birthday Quest",
+    images: [
+      {
+        url: "https://bday.quest/Cake.png",
+        width: 128,
+        height: 128,
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    site: "@astridlol",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#FFB3F4",
 };
 
 export default function RootLayout({
