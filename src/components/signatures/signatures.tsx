@@ -26,7 +26,7 @@ const Signatures = ({
 }) => {
   const [page, setPage] = useState(0);
 
-  const signaturesPerPage = 3;
+  const signaturesPerPage = 5;
   const displayedSignatures = signatures.slice(
     page * signaturesPerPage,
     page * signaturesPerPage + signaturesPerPage,
