@@ -8,7 +8,13 @@ import { createWish } from "~/server/actions/createWish";
 
 export default function Form(props: { cardId: string }) {
   const clientFunction = async (formData: FormData) => {
-    await createWish(formData, props.cardId);
+    try {
+      await createWish(formData, props.cardId);
+    } catch (error: unknown) {
+      if (error instanceof Error) toast(error.message);
+      return;
+    }
+
     toast("Card has been signed.");
     setTimeout(() => {
       location.href = `/c/${props.cardId}`;

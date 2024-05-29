@@ -5,6 +5,7 @@ import { typeid } from "typeid-js";
 import { db } from "../db";
 import { type Wishes, wishes } from "../db/schema";
 import { createUser, getUser } from "../db/queries";
+import { and, eq } from "drizzle-orm";
 
 export const createWish = async (formData: FormData, cardId: string) => {
   const { userId: creatorId } = auth();
@@ -15,6 +16,15 @@ export const createWish = async (formData: FormData, cardId: string) => {
 
   const user = await getUser(creatorId);
   if (!user) await createUser(creatorId);
+
+  const totalWishes = await db
+    .select()
+    .from(wishes)
+    .where(and(eq(wishes.cardId, cardId), eq(wishes.creatorId, creatorId)));
+
+  if (totalWishes.length >= 3) {
+    throw new Error("You've reached your wish limit");
+  }
 
   const id = typeid("wish").toString();
 
