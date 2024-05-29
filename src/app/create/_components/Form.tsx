@@ -28,7 +28,11 @@ export default function Form() {
       <section className="space-y-2">
         <Input placeholder="Title" className="py-2" name="title" />
         <Input placeholder="Description" className="py-2" name="description" />
-        <Input placeholder="Birthday" className="py-2" name="birthday" />
+        <Input
+          placeholder="Birthday (MM/DD/YYYY)"
+          className="py-2"
+          name="birthday"
+        />
       </section>
       <div className="float-right mt-4">
         <Button type="submit">Submit</Button>
