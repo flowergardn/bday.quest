@@ -6,6 +6,7 @@ import { Toaster } from "~/components/ui/sonner";
 import { TooltipProvider } from "~/components/ui/tooltip";
 import Navbar from "~/components/navbar";
 import { Viewport } from "next";
+import Script from "next/script";
 
 export const metadata = {
   title: "bday.quest (beta)",
@@ -46,6 +47,11 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" className={`${GeistSans.variable} dark`}>
+        <Script
+          data-domain="bday.quest"
+          defer
+          src="https://analytics.astrid.sh/js/script.js"
+        />
         <body>
           <TooltipProvider>
             <Navbar />
