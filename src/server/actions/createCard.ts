@@ -6,6 +6,13 @@ import { db } from "../db";
 import { cards } from "../db/schema";
 import type CardData from "~/interfaces/CardData";
 import { createUser, getUser } from "../db/queries";
+import { z } from "zod";
+
+const createCardSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  birthday: z.string().date(),
+});
 
 export const createCard = async (formData: FormData) => {
   const { userId: creatorId } = auth();
@@ -17,11 +24,16 @@ export const createCard = async (formData: FormData) => {
   const user = await getUser(creatorId);
   if (!user) await createUser(creatorId);
 
+  const { success, data } = createCardSchema.safeParse(Object.fromEntries(formData));
+  if (!success) {
+    throw new Error("Invalid form data!");
+  }
+
   const id = typeid("card").toString();
 
   let cardData: CardData;
 
-  const birthday = new Date(formData.get("birthday") as string);
+  const birthday = new Date(data.birthday);
 
   if (isNaN(birthday.getTime())) {
     throw new Error("That birthday is not a valid date");
@@ -33,8 +45,8 @@ export const createCard = async (formData: FormData) => {
       .values({
         id,
         creatorId,
-        title: formData.get("title") as string,
-        description: formData.get("description") as string,
+        title: data.title,
+        description: data.description,
         birthday,
         paused: false,
       })

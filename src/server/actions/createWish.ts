@@ -6,6 +6,11 @@ import { db } from "../db";
 import { type Wishes, wishes } from "../db/schema";
 import { createUser, getUser } from "../db/queries";
 import { and, eq } from "drizzle-orm";
+import { z } from "zod";
+
+const createWishSchema = z.object({
+  wish: z.string().trim().min(1, "You cannot send empty wishes"),
+});
 
 export const createWish = async (formData: FormData, cardId: string) => {
   const { userId: creatorId } = auth();
@@ -17,9 +22,9 @@ export const createWish = async (formData: FormData, cardId: string) => {
   const user = await getUser(creatorId);
   if (!user) await createUser(creatorId);
 
-  const wishText = formData.get("wish") as string;
-  if (wishText.trim().length === 0) {
-    throw new Error("You cannot send empty wishes");
+  const { success, data, error } = createWishSchema.safeParse(Object.fromEntries(formData));
+  if (!success) {
+    throw new Error(error.message);
   }
 
   const totalWishes = await db
@@ -42,7 +47,7 @@ export const createWish = async (formData: FormData, cardId: string) => {
         id,
         creatorId,
         cardId,
-        text: wishText,
+        text: data.wish,
         createdAt: new Date(),
       })
       .returning();
