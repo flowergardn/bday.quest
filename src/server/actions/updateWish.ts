@@ -8,6 +8,10 @@ export const updateWish = async (
   wishId: string,
   wishText: string,
 ): Promise<Wishes | undefined> => {
+  if (wishText.trim().length === 0) {
+    throw new Error("You cannot send empty wishes");
+  }
+
   const wish = (
     await db.select().from(wishSchema).where(eq(wishSchema.id, wishId))
   ).shift();

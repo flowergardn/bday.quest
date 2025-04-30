@@ -10,7 +10,6 @@ import {
 } from "~/components/ui/alert-dialog";
 import type CardWish from "~/interfaces/CardWish";
 import { Input } from "../ui/input";
-import { Button } from "../ui/button";
 import { toast } from "sonner";
 import { updateWish } from "~/server/actions/updateWish";
 
@@ -20,7 +19,12 @@ export const EditWishDialog = (props: {
 }) => {
   const clientFunction = async (formData: FormData) => {
     const newWish = formData.get("wish") as string;
-    await updateWish(props.signature.id, newWish);
+    try {
+      await updateWish(props.signature.id, newWish);
+    } catch (error: unknown) {
+      if (error instanceof Error) toast(error.message);
+      return;
+    }
     toast("Wish has been updated.");
   };
 
@@ -42,9 +46,7 @@ export const EditWishDialog = (props: {
               />
             </section>
             <AlertDialogFooter>
-              <AlertDialogAction>
-                <Button type="submit">Submit</Button>
-              </AlertDialogAction>
+              <AlertDialogAction type="submit">Submit</AlertDialogAction>
             </AlertDialogFooter>
           </form>
         </AlertDialogHeader>
