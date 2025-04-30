@@ -26,7 +26,7 @@ export const createCard = async (formData: FormData) => {
 
   const { success, data, error } = createCardSchema.safeParse(Object.fromEntries(formData));
   if (!success) {
-    throw new Error(error.message);
+    throw new Error(error.issues[0]?.message ?? "There was an error creating the card");
   }
 
   const id = typeid("card").toString();
