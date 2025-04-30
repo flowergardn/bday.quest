@@ -17,6 +17,11 @@ export const createWish = async (formData: FormData, cardId: string) => {
   const user = await getUser(creatorId);
   if (!user) await createUser(creatorId);
 
+  const wishText = formData.get("wish") as string;
+  if (wishText.trim().length === 0) {
+    throw new Error("You cannot send empty wishes");
+  }
+
   const totalWishes = await db
     .select()
     .from(wishes)
@@ -37,7 +42,7 @@ export const createWish = async (formData: FormData, cardId: string) => {
         id,
         creatorId,
         cardId,
-        text: formData.get("wish") as string,
+        text: wishText,
         createdAt: new Date(),
       })
       .returning();
