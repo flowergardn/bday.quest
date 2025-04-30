@@ -9,9 +9,9 @@ import { createUser, getUser } from "../db/queries";
 import { z } from "zod";
 
 const createCardSchema = z.object({
-  title: z.string(),
-  description: z.string(),
-  birthday: z.string().date(),
+  title: z.string().min(1, "Title is required"),
+  description: z.string().min(1, "Description is required"),
+  birthday: z.string().date("You must provide a valid date"),
 });
 
 export const createCard = async (formData: FormData) => {
@@ -24,9 +24,9 @@ export const createCard = async (formData: FormData) => {
   const user = await getUser(creatorId);
   if (!user) await createUser(creatorId);
 
-  const { success, data } = createCardSchema.safeParse(Object.fromEntries(formData));
+  const { success, data, error } = createCardSchema.safeParse(Object.fromEntries(formData));
   if (!success) {
-    throw new Error("Invalid form data!");
+    throw new Error(error.message);
   }
 
   const id = typeid("card").toString();
