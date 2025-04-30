@@ -47,9 +47,7 @@ export const EditWishDialog = (props: {
               />
             </section>
             <AlertDialogFooter>
-              <AlertDialogAction>
-                <Button type="submit">Submit</Button>
-              </AlertDialogAction>
+              <AlertDialogAction type="submit">Submit</AlertDialogAction>
             </AlertDialogFooter>
           </form>
         </AlertDialogHeader>
