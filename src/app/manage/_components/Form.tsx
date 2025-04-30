@@ -1,5 +1,6 @@
 "use client";
 
+import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
 import { Button } from "~/components/ui/button";
 import { deleteCard } from "~/server/actions/deleteCard";
@@ -18,9 +19,14 @@ const Form = (props: { cardId: string }) => {
     }, 1500);
   };
 
+  const SubmitButton = () => {
+    const { pending } = useFormStatus();
+    return <Button type="submit" variant="outline" disabled={pending}>Delete</Button>;
+  }
+
   return (
     <form action={clientAction}>
-      <Button variant="outline">Delete</Button>
+      <SubmitButton />
     </form>
   );
 };

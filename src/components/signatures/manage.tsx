@@ -10,7 +10,6 @@ import {
 } from "~/components/ui/alert-dialog";
 import type CardWish from "~/interfaces/CardWish";
 import { Input } from "../ui/input";
-import { Button } from "../ui/button";
 import { toast } from "sonner";
 import { updateWish } from "~/server/actions/updateWish";
 
