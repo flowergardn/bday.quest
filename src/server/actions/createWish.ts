@@ -12,11 +12,15 @@ const createWishSchema = z.object({
   wish: z.string().trim().min(1, "You cannot send empty wishes"),
 });
 
-export const createWish = async (formData: FormData, cardId: string) => {
+export type CreateWishResult =
+  | { success: true; data: Wishes }
+  | { success: false; error: string };
+
+export const createWish = async (formData: FormData, cardId: string): Promise<CreateWishResult> => {
   const { userId: creatorId } = auth();
 
   if (!creatorId) {
-    throw new Error("You must be signed in to add a wish");
+    return { success: false, error: "You must be signed in to add a wish" };
   }
 
   const user = await getUser(creatorId);
@@ -24,7 +28,7 @@ export const createWish = async (formData: FormData, cardId: string) => {
 
   const { success, data, error } = createWishSchema.safeParse(Object.fromEntries(formData));
   if (!success) {
-    throw new Error(error.issues[0]?.message ?? "There was an error creating the card");
+    return { success: false, error: error.issues[0]?.message ?? "There was an error creating the card" };
   }
 
   const totalWishes = await db
@@ -33,7 +37,7 @@ export const createWish = async (formData: FormData, cardId: string) => {
     .where(and(eq(wishes.cardId, cardId), eq(wishes.creatorId, creatorId)));
 
   if (totalWishes.length >= 3) {
-    throw new Error("You've reached your wish limit");
+    return { success: false, error: "You've reached your wish limit" };
   }
 
   const id = typeid("wish").toString();
@@ -54,8 +58,8 @@ export const createWish = async (formData: FormData, cardId: string) => {
     wishData = wish[0] as Wishes;
   } catch (error) {
     console.log(error);
-    throw new Error("There was an error adding this wish to the card");
+    return { success: false, error: "There was an error adding this wish to the card" };
   }
 
-  return wishData;
+  return { success: true, data: wishData };
 };
