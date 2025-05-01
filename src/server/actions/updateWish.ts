@@ -4,12 +4,16 @@ import { db } from "~/server/db/";
 import { eq } from "drizzle-orm";
 import { type Wishes, wishes as wishSchema } from "~/server/db/schema";
 
+export type UpdateWishResult =
+  | { success: true; data: Wishes }
+  | { success: false; error: string };
+
 export const updateWish = async (
   wishId: string,
   wishText: string,
-): Promise<Wishes | undefined> => {
+): Promise<UpdateWishResult> => {
   if (wishText.trim().length === 0) {
-    throw new Error("You cannot send empty wishes");
+    return { success: false, error: "You cannot send empty wishes" };
   }
 
   const wish = (
@@ -17,7 +21,7 @@ export const updateWish = async (
   ).shift();
 
   if (!wish) {
-    throw new Error("Wish not found");
+    return { success: false, error: "Wish not found" };
   }
 
   const newWish = await db
@@ -27,5 +31,6 @@ export const updateWish = async (
     })
     .where(eq(wishSchema.id, wishId))
     .returning();
-  return newWish.shift();
+
+  return { success: true, data: newWish.shift() as Wishes };
 };

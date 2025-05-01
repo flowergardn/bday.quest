@@ -10,17 +10,14 @@ import { useFormStatus } from "react-dom";
 
 export default function Form() {
   const clientFunction = async (formData: FormData) => {
-    let cardResponse: CardData;
-
-    try {
-      cardResponse = await createCard(formData);
-    } catch (error: unknown) {
-      if (error instanceof Error) toast(error.message);
+    const cardResponse = await createCard(formData);
+    if (!cardResponse.success) {
+      toast(cardResponse.error);
       return;
     }
 
     setTimeout(() => {
-      location.href = `/c/${cardResponse.id}`;
+      location.href = `/c/${cardResponse.data.id}`;
     }, 1500);
   };
 

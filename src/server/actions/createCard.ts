@@ -14,11 +14,15 @@ const createCardSchema = z.object({
   birthday: z.string().date("You must provide a valid date"),
 });
 
-export const createCard = async (formData: FormData) => {
+export type CreateCardResult =
+  | { success: true; data: CardData }
+  | { success: false; error: string };
+
+export const createCard = async (formData: FormData): Promise<CreateCardResult> => {
   const { userId: creatorId } = auth();
 
   if (!creatorId) {
-    throw new Error("You must be signed in to create a card");
+    return { success: false, error: "You must be signed in to create a card" };
   }
 
   const user = await getUser(creatorId);
@@ -26,7 +30,7 @@ export const createCard = async (formData: FormData) => {
 
   const { success, data, error } = createCardSchema.safeParse(Object.fromEntries(formData));
   if (!success) {
-    throw new Error(error.issues[0]?.message ?? "There was an error creating the card");
+    return { success: false, error: error.issues[0]?.message ?? "There was an error creating the card" };
   }
 
   const id = typeid("card").toString();
@@ -36,7 +40,7 @@ export const createCard = async (formData: FormData) => {
   const birthday = new Date(data.birthday);
 
   if (isNaN(birthday.getTime())) {
-    throw new Error("That birthday is not a valid date");
+    return { success: false, error: "That birthday is not a valid date" };
   }
 
   try {
@@ -54,8 +58,8 @@ export const createCard = async (formData: FormData) => {
     cardData = card[0] as CardData;
   } catch (error: unknown) {
     console.log(error);
-    throw new Error("There was an error creating the card");
+    return { success: false, error: "There was an error creating the card" };
   }
 
-  return cardData;
+  return { success: true, data: cardData };
 };

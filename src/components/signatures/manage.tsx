@@ -19,10 +19,9 @@ export const EditWishDialog = (props: {
 }) => {
   const clientFunction = async (formData: FormData) => {
     const newWish = formData.get("wish") as string;
-    try {
-      await updateWish(props.signature.id, newWish);
-    } catch (error: unknown) {
-      if (error instanceof Error) toast(error.message);
+    const updateResponse = await updateWish(props.signature.id, newWish);
+    if (!updateResponse.success) {
+      toast(updateResponse.error);
       return;
     }
     toast("Wish has been updated.");

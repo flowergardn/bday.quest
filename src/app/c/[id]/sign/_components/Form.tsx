@@ -9,10 +9,9 @@ import { useFormStatus } from "react-dom";
 
 export default function Form(props: { cardId: string }) {
   const clientFunction = async (formData: FormData) => {
-    try {
-      await createWish(formData, props.cardId);
-    } catch (error: unknown) {
-      if (error instanceof Error) toast(error.message);
+    const createResponse = await createWish(formData, props.cardId);
+    if (!createResponse.success) {
+      toast(createResponse.error);
       return;
     }
 
