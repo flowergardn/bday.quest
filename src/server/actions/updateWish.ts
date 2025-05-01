@@ -16,14 +16,6 @@ export const updateWish = async (
     return { success: false, error: "You cannot send empty wishes" };
   }
 
-  const wish = (
-    await db.select().from(wishSchema).where(eq(wishSchema.id, wishId))
-  ).shift();
-
-  if (!wish) {
-    return { success: false, error: "Wish not found" };
-  }
-
   const newWish = await db
     .update(wishSchema)
     .set({
@@ -31,6 +23,8 @@ export const updateWish = async (
     })
     .where(eq(wishSchema.id, wishId))
     .returning();
-
-  return { success: true, data: newWish.shift() as Wishes };
+  if (newWish.length === 0) {
+    return { success: false, error: "Wish not found" };
+  }
+  return { success: true, data: newWish[0] as Wishes };
 };
