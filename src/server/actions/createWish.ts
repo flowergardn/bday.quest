@@ -3,7 +3,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { typeid } from "typeid-js";
 import { db } from "../db";
-import { type Wishes, wishes } from "../db/schema";
+import { type Wishes, wishes, cards } from "../db/schema";
 import { createUser, getUser } from "../db/queries";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
@@ -16,7 +16,10 @@ export type CreateWishResult =
   | { success: true; data: Wishes }
   | { success: false; error: string };
 
-export const createWish = async (formData: FormData, cardId: string): Promise<CreateWishResult> => {
+export const createWish = async (
+  formData: FormData,
+  cardId: string,
+): Promise<CreateWishResult> => {
   const { userId: creatorId } = auth();
 
   if (!creatorId) {
@@ -26,9 +29,24 @@ export const createWish = async (formData: FormData, cardId: string): Promise<Cr
   const user = await getUser(creatorId);
   if (!user) await createUser(creatorId);
 
-  const { success, data, error } = createWishSchema.safeParse(Object.fromEntries(formData));
+  const { success, data, error } = createWishSchema.safeParse(
+    Object.fromEntries(formData),
+  );
   if (!success) {
-    return { success: false, error: error.issues[0]?.message ?? "There was an error creating the card" };
+    return {
+      success: false,
+      error: error.issues[0]?.message ?? "There was an error creating the wish",
+    };
+  }
+
+  const [cardData] = await db.select().from(cards).where(eq(cards.id, cardId));
+
+  if (!cardData) {
+    return { success: false, error: "Card not found" };
+  }
+
+  if (cardData.paused) {
+    return { success: false, error: "This card is currently paused" };
   }
 
   const totalWishes = await db
@@ -45,7 +63,7 @@ export const createWish = async (formData: FormData, cardId: string): Promise<Cr
   let wishData: Wishes;
 
   try {
-    const wish = await db
+    const [wish] = await db
       .insert(wishes)
       .values({
         id,
@@ -55,10 +73,16 @@ export const createWish = async (formData: FormData, cardId: string): Promise<Cr
         createdAt: new Date(),
       })
       .returning();
-    wishData = wish[0] as Wishes;
+
+    if (!wish) throw new Error("Wish not found");
+
+    wishData = wish;
   } catch (error) {
     console.log(error);
-    return { success: false, error: "There was an error adding this wish to the card" };
+    return {
+      success: false,
+      error: "There was an error adding this wish to the card",
+    };
   }
 
   return { success: true, data: wishData };

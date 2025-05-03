@@ -1,8 +1,11 @@
 import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
-import Signatures from "~/components/signatures/signatures";
+import Signatures from "./signatures/signatures";
 import { Button } from "~/components/ui/button";
 import { getCard, getWishes } from "~/server/db/queries";
+import { TooltipProvider } from "~/components/ui/tooltip";
+import TooltipButton from "~/components/tooltip-button";
+import CreatorOptions from "./creator-options";
 
 export default async function CardView({
   params: { id: cardId },
@@ -18,23 +21,25 @@ export default async function CardView({
 
   const wishes = await getWishes(cardId);
 
-  const SignCard = () => {
+  function SignCard() {
     if (cardData.paused) {
       return (
-        <div className="tooltip tooltip-bottom" data-tip="Wishes are disabled">
+        <TooltipButton tooltip="Wishes are disabled">
           <Button size="lg" variant="secondary" disabled>
             Sign
           </Button>
-        </div>
+        </TooltipButton>
       );
     }
 
     return (
       <Link href={`/c/${cardData.id}/sign`}>
-        <Button variant="default">Sign</Button>
+        <Button variant="default" size="lg">
+          Sign
+        </Button>
       </Link>
     );
-  };
+  }
 
   return (
     <div className="bg-base-100 flex min-h-screen flex-col items-center">
@@ -50,7 +55,17 @@ export default async function CardView({
           signatures={wishes}
           card={cardData}
         />
-        <SignCard />
+        <section className="mt-4 flex flex-row items-center justify-center gap-4">
+          <TooltipProvider>
+            <SignCard />
+            <CreatorOptions
+              cardData={{
+                cardId: cardData.id,
+                paused: cardData.paused,
+              }}
+            />
+          </TooltipProvider>
+        </section>
       </div>
     </div>
   );

@@ -24,16 +24,11 @@ export default function Navbar() {
         <PopoverTrigger asChild>
           <Avatar>
             <AvatarImage src={userData.imageUrl} />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarFallback>User</AvatarFallback>
           </Avatar>
         </PopoverTrigger>
         <PopoverContent className="m-4 w-fit space-x-4 bg-black/60">
           <div className="flex flex-col items-center justify-around">
-            {/* <Link href="/signed">
-              <Button variant={"ghost"} size="sm">
-                View signed cards
-              </Button>
-            </Link> */}
             <Link href="/manage">
               <Button variant={"ghost"} size="sm">
                 Manage cards

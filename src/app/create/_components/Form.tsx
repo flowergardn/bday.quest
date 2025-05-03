@@ -5,7 +5,6 @@ import { Input } from "~/components/ui/input";
 import React from "react";
 import { createCard } from "~/server/actions/createCard";
 import { toast } from "sonner";
-import type CardData from "~/interfaces/CardData";
 import { useFormStatus } from "react-dom";
 
 export default function Form() {
@@ -23,8 +22,12 @@ export default function Form() {
 
   const SubmitButton = () => {
     const { pending } = useFormStatus();
-    return <Button type="submit" disabled={pending}>Submit</Button>;
-  }
+    return (
+      <Button type="submit" disabled={pending}>
+        Submit
+      </Button>
+    );
+  };
 
   return (
     <form className="my-12" action={clientFunction}>
@@ -32,7 +35,7 @@ export default function Form() {
         <Input placeholder="Title" className="py-2" name="title" />
         <Input placeholder="Description" className="py-2" name="description" />
         <Input
-          placeholder="Birthday (MM/DD/YYYY)"
+          placeholder="Birthday (YYYY-MM-DD)"
           className="py-2"
           name="birthday"
         />
