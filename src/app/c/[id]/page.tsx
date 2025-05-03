@@ -58,12 +58,14 @@ export default async function CardView({
         <section className="mt-4 flex flex-row items-center justify-center gap-4">
           <TooltipProvider>
             <SignCard />
-            <CreatorOptions
-              cardData={{
-                cardId: cardData.id,
-                paused: cardData.paused,
-              }}
-            />
+            {cardData.creatorId === user.userId && (
+              <CreatorOptions
+                cardData={{
+                  cardId: cardData.id,
+                  paused: cardData.paused,
+                }}
+              />
+            )}
           </TooltipProvider>
         </section>
       </div>
