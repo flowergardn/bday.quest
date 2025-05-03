@@ -23,5 +23,7 @@ export async function deleteCard(cardId: string) {
     return { success: false, message: "Not authorized" };
   }
 
-  return db.delete(cardSchema).where(eq(cardSchema.id, cardId));
+  await db.delete(cardSchema).where(eq(cardSchema.id, cardId));
+
+  return { success: true };
 }

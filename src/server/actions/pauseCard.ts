@@ -32,5 +32,8 @@ export const pauseCard = async (cardId: string) => {
 
   revalidatePath("/", "layout");
 
-  return newCard?.paused;
+  return {
+    success: true,
+    paused: newCard?.paused,
+  };
 };

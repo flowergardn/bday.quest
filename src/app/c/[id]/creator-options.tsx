@@ -25,10 +25,16 @@ export default function CreatorOptions(props: {
         id: "delete-begin",
       });
 
-      await deleteCard(props.cardData.cardId);
+      const data = await deleteCard(props.cardData.cardId);
 
       toast.dismiss("delete-begin");
-      toast("Deletion complete!");
+
+      if (!data.success) {
+        toast(data.message);
+        return;
+      }
+
+      toast(`Card deleted!`);
 
       setTimeout(() => {
         location.href = "/";
@@ -58,10 +64,15 @@ export default function CreatorOptions(props: {
         id: "lock-begin",
       });
 
-      const paused = await pauseCard(props.cardData.cardId);
+      const pauseData = await pauseCard(props.cardData.cardId);
+
+      if (pauseData.success === false) {
+        toast(pauseData.message);
+        return;
+      }
 
       toast.dismiss("lock-begin");
-      toast(`Card is now ${paused ? "locked" : "unlocked"}!`);
+      toast(`Card is now ${pauseData.paused ? "locked" : "unlocked"}!`);
     }
 
     return (
