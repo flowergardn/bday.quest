@@ -9,7 +9,11 @@ import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
 const createWishSchema = z.object({
-  wish: z.string().trim().min(1, "You cannot send empty wishes"),
+  wish: z
+    .string()
+    .trim()
+    .min(1, "You cannot send empty meessages.")
+    .max(2048, "Your message is too long!"),
 });
 
 export type CreateWishResult =

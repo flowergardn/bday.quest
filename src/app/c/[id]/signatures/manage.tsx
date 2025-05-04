@@ -12,6 +12,7 @@ import type CardWish from "~/interfaces/CardWish";
 import { Input } from "~/components/ui/input";
 import { toast } from "sonner";
 import { updateWish } from "~/server/actions/updateWish";
+import { Textarea } from "~/components/ui/textarea";
 
 export const EditWishDialog = (props: {
   signature: CardWish;
@@ -38,8 +39,8 @@ export const EditWishDialog = (props: {
           </AlertDialogDescription>
           <form className="my-12" action={clientFunction}>
             <section className="space-y-2">
-              <Input
-                placeholder={props.signature.text}
+              <Textarea
+                defaultValue={props.signature.text}
                 className="py-2"
                 name="wish"
               />

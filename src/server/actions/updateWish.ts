@@ -4,6 +4,7 @@ import { db } from "~/server/db/";
 import { eq } from "drizzle-orm";
 import { type Wishes, wishes as wishSchema } from "~/server/db/schema";
 import { auth } from "@clerk/nextjs/server";
+import { revalidatePath } from "next/cache";
 
 export type UpdateWishResult =
   | { success: true; data: Wishes }
@@ -43,6 +44,8 @@ export const updateWish = async (
   if (!newWish) {
     return { success: false, error: "Wish not found" };
   }
+
+  revalidatePath("/", "layout");
 
   return { success: true, data: newWish };
 };

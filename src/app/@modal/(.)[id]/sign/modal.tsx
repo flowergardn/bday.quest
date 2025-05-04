@@ -1,6 +1,6 @@
 import { SignInButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
-import Form from "~/app/c/[id]/sign/_components/Form";
+import Form from "~/app/c/[id]/sign/Form";
 import {
   AlertDialog,
   AlertDialogAction,

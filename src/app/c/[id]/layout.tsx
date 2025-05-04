@@ -1,4 +1,4 @@
-import { Viewport } from "next";
+import { type Viewport } from "next";
 import { getCard } from "~/server/db/queries";
 
 export const viewport: Viewport = {

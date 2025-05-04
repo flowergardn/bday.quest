@@ -6,6 +6,7 @@ import React from "react";
 import { toast } from "sonner";
 import { createWish } from "~/server/actions/createWish";
 import { useFormStatus } from "react-dom";
+import { Textarea } from "~/components/ui/textarea";
 
 export default function Form(props: { cardId: string }) {
   const clientFunction = async (formData: FormData) => {
@@ -23,13 +24,21 @@ export default function Form(props: { cardId: string }) {
 
   const SubmitButton = () => {
     const { pending } = useFormStatus();
-    return <Button type="submit" disabled={pending}>Submit</Button>;
-  }
+    return (
+      <Button type="submit" disabled={pending}>
+        Submit
+      </Button>
+    );
+  };
 
   return (
     <form className="my-12" action={clientFunction}>
       <section className="space-y-2">
-        <Input placeholder="Your wish" className="py-2" name="wish" />
+        <Textarea
+          placeholder="Enter your message here..."
+          className="py-2"
+          name="wish"
+        />
       </section>
       <div className="float-right mt-4">
         <SubmitButton />

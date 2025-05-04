@@ -62,7 +62,7 @@ const Signatures = ({
       const isWishCreator = props.signature.creatorId == currentUser;
       const isCardCreator = card.creatorId == currentUser;
 
-      const Delete = () => {
+      function Delete() {
         if (!isCardCreator && !isWishCreator) return <></>;
 
         const clientAction = async () => {
@@ -78,13 +78,17 @@ const Signatures = ({
             </Button>
           </form>
         );
-      };
+      }
+
+      const Text = () => (
+        <p className="break-words text-start">{props.signature.text}</p>
+      );
 
       if (isWishCreator || isCardCreator) {
         return (
           <Popover>
             <PopoverTrigger>
-              <p className="text-start">{props.signature.text}</p>
+              <Text />
             </PopoverTrigger>
             <PopoverContent
               className="w-fit space-x-4 bg-black/60"
@@ -103,7 +107,7 @@ const Signatures = ({
           </Popover>
         );
       }
-      return <p className="text-start">{props.signature.text}</p>;
+      return <Text />;
     };
 
     return (
