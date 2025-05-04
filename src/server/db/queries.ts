@@ -1,4 +1,4 @@
-import { desc, eq, inArray } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { db } from ".";
 import {
   type User,
@@ -7,6 +7,7 @@ import {
   users as userSchema,
 } from "./schema";
 import { auth, clerkClient } from "@clerk/nextjs/server";
+import type CardWish from "~/interfaces/CardWish";
 import type CardData from "~/interfaces/CardData";
 import { type CardDataWithWishes } from "~/interfaces/CardData";
 
@@ -22,29 +23,15 @@ export async function getWishes(cardId: string) {
     .where(eq(wishSchema.cardId, cardId))
     .orderBy(desc(wishSchema.createdAt));
 
-  const uniqueUserIds = [...new Set(wishes.map((wish) => wish.creatorId))];
-
-  const usersData =
-    uniqueUserIds.length > 0
-      ? (await clerkClient.users.getUserList({ userId: uniqueUserIds })).data
-      : [];
-
-  const userMap: Record<string, { imageUrl: string; username: string }> = {};
-  usersData.forEach((user) => {
-    userMap[user.id] = {
-      imageUrl: user.imageUrl,
-      username: user.username ?? user.id,
-    };
-  });
-
   const parsedWishes = await Promise.all(
     wishes.map(async (wish) => {
-      const userData = userMap[wish.creatorId];
-      return {
+      const user = await clerkClient.users.getUser(wish.creatorId);
+      const newWish: CardWish = {
         ...wish,
-        profilePicture: userData?.imageUrl ?? "",
-        username: userData?.username ?? wish.creatorId,
+        profilePicture: user.imageUrl,
+        username: user.username ?? user.id,
       };
+      return newWish;
     }),
   );
 
@@ -54,62 +41,41 @@ export async function getWishes(cardId: string) {
 export async function getCreatedCards(): Promise<CardDataWithWishes[]> {
   const user = auth();
   if (!user.userId) return [];
-
   const cards: CardData[] = await db
     .select()
     .from(cardSchema)
     .where(eq(cardSchema.creatorId, user.userId));
 
-  if (cards.length === 0) return [];
+  const newCards = await Promise.all(
+    cards.map(async (card) => {
+      const wishes = await db
+        .select()
+        .from(wishSchema)
+        .where(eq(wishSchema.cardId, card.id))
+        .orderBy(desc(wishSchema.createdAt));
 
-  const cardIds = cards.map((card) => card.id);
-  const allWishes = await db
-    .select()
-    .from(wishSchema)
-    .where(inArray(wishSchema.cardId, cardIds))
-    .orderBy(desc(wishSchema.createdAt));
+      const parsedWishes = await Promise.all(
+        wishes.map(async (wish) => {
+          const user = await clerkClient.users.getUser(wish.creatorId);
+          const newWish: CardWish = {
+            ...wish,
+            profilePicture: user.imageUrl,
+            username: user.username ?? user.id,
+          };
+          return newWish;
+        }),
+      );
 
-  const wishesMap: Record<string, typeof allWishes> = {};
-  allWishes.forEach((wish) => {
-    if (!wishesMap[wish.cardId]) {
-      wishesMap[wish.cardId] = [];
-    }
-    wishesMap[wish.cardId]?.push(wish);
-  });
-
-  const uniqueUserIds = [...new Set(allWishes.map((wish) => wish.creatorId))];
-
-  const usersData =
-    uniqueUserIds.length > 0
-      ? (await clerkClient.users.getUserList({ userId: uniqueUserIds })).data
-      : [];
-
-  const userMap: Record<string, { imageUrl: string; username: string }> = {};
-  usersData.forEach((user) => {
-    userMap[user.id] = {
-      imageUrl: user.imageUrl,
-      username: user.username ?? user.id,
-    };
-  });
-
-  const cardsWithWishes: CardDataWithWishes[] = cards.map((card) => {
-    const cardWishes = wishesMap[card.id] ?? [];
-    const parsedWishes = cardWishes.map((wish) => {
-      const userData = userMap[wish.creatorId];
-      return {
-        ...wish,
-        profilePicture: userData?.imageUrl ?? "",
-        username: userData?.username ?? wish.creatorId,
+      const newCard: CardDataWithWishes = {
+        ...card,
+        wishes: parsedWishes,
       };
-    });
 
-    return {
-      ...card,
-      wishes: parsedWishes,
-    };
-  });
+      return newCard;
+    }),
+  );
 
-  return cardsWithWishes;
+  return newCards;
 }
 
 export async function createUser(userId: string) {
