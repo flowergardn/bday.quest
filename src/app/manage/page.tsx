@@ -1,48 +1,53 @@
 import { getCreatedCards } from "~/server/db/queries";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+} from "~/components/ui/table";
 import { Button } from "~/components/ui/button";
-import { type CardDataWithWishes } from "~/interfaces/CardData";
 import Link from "next/link";
-import Form from "./Form";
+import { CardRow, EmptyState } from "./table-components";
 
 export default async function ManageCards() {
   const cards = await getCreatedCards();
 
-  const CreatedCard = (props: { card: CardDataWithWishes }) => {
-    const wishes = props.card.wishes;
-    const properText = wishes.length === 1 ? "wish" : "wishes";
-
-    return (
-      <Card className="m-4 w-[350px] bg-black/60">
-        <CardHeader>
-          <CardTitle>{props.card.title}</CardTitle>
-          <CardDescription>{props.card.description}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          {props.card.wishes.length} total {properText}
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Form cardId={props.card.id} />
-          <Link href={`/c/${props.card.id}`}>
-            <Button>View</Button>
-          </Link>
-        </CardFooter>
-      </Card>
-    );
-  };
-
   return (
-    <div className="flex max-h-screen flex-wrap items-center justify-center gap-4 overflow-y-auto px-4 py-[15vh]">
-      {cards.map((card) => (
-        <CreatedCard card={card} key={card.id} />
-      ))}
+    <div className="container mx-auto mt-[10vh] py-8">
+      <div className="mx-auto flex max-w-3xl flex-col gap-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold">Manage Cards</h1>
+            <p className="mt-1 text-sm text-zinc-300">
+              You have created {cards.length}{" "}
+              {cards.length === 1 ? "card" : "cards"}
+            </p>
+          </div>
+          <Link href="/create">
+            <Button size="lg" variant="outline">
+              Create Card
+            </Button>
+          </Link>
+        </div>
+
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Title</TableHead>
+              <TableHead>Description</TableHead>
+              <TableHead className="text-right">Messages</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {cards.length === 0 ? (
+              <EmptyState />
+            ) : (
+              cards.map((card) => <CardRow key={card.id} card={card} />)
+            )}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 }
