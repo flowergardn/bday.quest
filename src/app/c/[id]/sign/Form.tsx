@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { createWish } from "~/server/actions/createWish";
 import { useFormStatus } from "react-dom";
 import { Textarea } from "~/components/ui/textarea";
+import Link from "next/link";
 
 export default function Form(props: { cardId: string }) {
   const clientFunction = async (formData: FormData) => {
@@ -39,7 +40,10 @@ export default function Form(props: { cardId: string }) {
           name="wish"
         />
       </section>
-      <div className="float-right mt-4">
+      <div className="float-right mt-4 flex gap-4">
+        <Link href={`/c/${props.cardId}`}>
+          <Button variant="secondary">Cancel</Button>
+        </Link>
         <SubmitButton />
       </div>
     </form>
