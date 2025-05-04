@@ -1,10 +1,9 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
-import { type NextRequest } from "next/server";
 import { db } from "~/server/db";
 import { cards, wishes } from "~/server/db/schema";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const user = await currentUser();
   if (!user) {
     return new Response(JSON.stringify([]));

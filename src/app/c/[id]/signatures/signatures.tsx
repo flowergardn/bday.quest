@@ -18,6 +18,7 @@ import { EditWishDialog } from "./manage";
 import type CardData from "~/interfaces/CardData";
 import { deleteWish } from "~/server/actions/deleteWish";
 import { toast } from "sonner";
+import Image from "next/image";
 
 const Signatures = ({
   signatures,
@@ -112,9 +113,12 @@ const Signatures = ({
 
     return (
       <div className="mb-4 flex flex-row" key={props.signature.id}>
-        <img
+        <Image
           src={props.signature.profilePicture}
           className="mt-[0.375rem] h-10 w-10 rounded-full"
+          alt="Profile Picture"
+          width={128}
+          height={128}
         />
         <div className="ml-2 flex w-[75%] flex-col text-[1rem] lg:w-[78%]">
           <b>{props.signature.username}</b>

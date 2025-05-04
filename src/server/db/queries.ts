@@ -1,7 +1,7 @@
 import { desc, eq } from "drizzle-orm";
 import { db } from ".";
 import {
-  User,
+  type User,
   cards as cardSchema,
   wishes as wishSchema,
   users as userSchema,

@@ -5,7 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "~/components/ui/sonner";
 import { TooltipProvider } from "~/components/ui/tooltip";
 import Navbar from "~/components/navbar";
-import { Viewport } from "next";
+import { type Viewport } from "next";
 
 export const metadata = {
   title: "bday.quest (beta)",
