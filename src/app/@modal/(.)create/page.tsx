@@ -1,4 +1,4 @@
-import Form from "~/app/create/_components/Form";
+import Form from "~/app/create/Form";
 import {
   AlertDialog,
   AlertDialogContent,
