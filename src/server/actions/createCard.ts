@@ -11,14 +11,19 @@ import { z } from "zod";
 const createCardSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
-  birthday: z.string().date("You must provide a valid date"),
+  birthday: z.coerce.date({
+    required_error: "Date is required",
+    invalid_type_error: "That's not a date!",
+  }),
 });
 
 export type CreateCardResult =
   | { success: true; data: CardData }
   | { success: false; error: string };
 
-export const createCard = async (formData: FormData): Promise<CreateCardResult> => {
+export const createCard = async (
+  formData: FormData,
+): Promise<CreateCardResult> => {
   const { userId: creatorId } = auth();
 
   if (!creatorId) {
@@ -28,9 +33,14 @@ export const createCard = async (formData: FormData): Promise<CreateCardResult> 
   const user = await getUser(creatorId);
   if (!user) await createUser(creatorId);
 
-  const { success, data, error } = createCardSchema.safeParse(Object.fromEntries(formData));
+  const { success, data, error } = createCardSchema.safeParse(
+    Object.fromEntries(formData),
+  );
   if (!success) {
-    return { success: false, error: error.issues[0]?.message ?? "There was an error creating the card" };
+    return {
+      success: false,
+      error: error.issues[0]?.message ?? "There was an error creating the card",
+    };
   }
 
   const id = typeid("card").toString();
