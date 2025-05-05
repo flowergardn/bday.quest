@@ -6,6 +6,7 @@ import {
   wishes as wishSchema,
   users as userSchema,
 } from "./schema";
+import type { User as ClerkUser } from "@clerk/backend";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import type CardWish from "~/interfaces/CardWish";
 import type CardData from "~/interfaces/CardData";
@@ -24,16 +25,26 @@ export async function getWishes(cardId: string) {
     .orderBy(desc(wishSchema.createdAt));
 
   const userIds = [...new Set(wishes.map((wish) => wish.creatorId))];
-  // NOTE: clerk only supports looking up 100 unique users at a time
-  const userList = await clerkClient.users.getUserList({
-    userId: userIds,
-    limit: 100,
-  });
+
+  const batchSize = 100;
+  const userMap = new Map<string, ClerkUser>();
+
+  for (let i = 0; i < userIds.length; i += batchSize) {
+    const batch = userIds.slice(i, i + batchSize);
+
+    const userBatch = await clerkClient.users.getUserList({
+      userId: batch,
+      limit: batchSize,
+    });
+
+    userBatch.data.forEach((user) => {
+      userMap.set(user.id, user);
+    });
+  }
 
   const parsedWishes = await Promise.all(
     wishes.map(async (wish) => {
-      const user = userList.data.find((user) => user.id === wish.creatorId);
-
+      const user = userMap.get(wish.creatorId);
       if (!user)
         throw new Error(`User not found: ${wish.creatorId} (${wish.id})`);
 
