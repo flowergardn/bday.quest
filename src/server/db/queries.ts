@@ -23,9 +23,20 @@ export async function getWishes(cardId: string) {
     .where(eq(wishSchema.cardId, cardId))
     .orderBy(desc(wishSchema.createdAt));
 
+  const userIds = [...new Set(wishes.map((wish) => wish.creatorId))];
+  // NOTE: clerk only supports looking up 100 unique users at a time
+  const userList = await clerkClient.users.getUserList({
+    userId: userIds,
+    limit: 100,
+  });
+
   const parsedWishes = await Promise.all(
     wishes.map(async (wish) => {
-      const user = await clerkClient.users.getUser(wish.creatorId);
+      const user = userList.data.find((user) => user.id === wish.creatorId);
+
+      if (!user)
+        throw new Error(`User not found: ${wish.creatorId} (${wish.id})`);
+
       const newWish: CardWish = {
         ...wish,
         profilePicture: user.imageUrl,
@@ -41,6 +52,7 @@ export async function getWishes(cardId: string) {
 export async function getCreatedCards(): Promise<CardDataWithWishes[]> {
   const user = auth();
   if (!user.userId) return [];
+
   const cards: CardData[] = await db
     .select()
     .from(cardSchema)
@@ -48,30 +60,12 @@ export async function getCreatedCards(): Promise<CardDataWithWishes[]> {
 
   const newCards = await Promise.all(
     cards.map(async (card) => {
-      const wishes = await db
-        .select()
-        .from(wishSchema)
-        .where(eq(wishSchema.cardId, card.id))
-        .orderBy(desc(wishSchema.createdAt));
+      const wishes = await getWishes(card.id);
 
-      const parsedWishes = await Promise.all(
-        wishes.map(async (wish) => {
-          const user = await clerkClient.users.getUser(wish.creatorId);
-          const newWish: CardWish = {
-            ...wish,
-            profilePicture: user.imageUrl,
-            username: user.username ?? user.id,
-          };
-          return newWish;
-        }),
-      );
-
-      const newCard: CardDataWithWishes = {
+      return {
         ...card,
-        wishes: parsedWishes,
+        wishes,
       };
-
-      return newCard;
     }),
   );
 
@@ -79,11 +73,12 @@ export async function getCreatedCards(): Promise<CardDataWithWishes[]> {
 }
 
 export async function createUser(userId: string) {
-  const user: User = {
-    id: userId,
-  };
-  await db.insert(userSchema).values(user);
-  return user;
+  return await db
+    .insert(userSchema)
+    .values({
+      id: userId,
+    })
+    .returning();
 }
 
 export async function getUser(userId: string): Promise<User | null> {
