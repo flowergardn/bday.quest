@@ -82,7 +82,9 @@ const Signatures = ({
       }
 
       const Text = () => (
-        <p className="break-words text-start">{props.signature.text}</p>
+        <p className="whitespace-pre-wrap break-words text-start">
+          {props.signature.text}
+        </p>
       );
 
       if (isWishCreator || isCardCreator) {

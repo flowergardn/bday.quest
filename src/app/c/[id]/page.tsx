@@ -6,6 +6,7 @@ import { getCard, getWishes } from "~/server/db/queries";
 import { TooltipProvider } from "~/components/ui/tooltip";
 import TooltipButton from "~/components/tooltip-button";
 import CreatorOptions from "./creator-options";
+import { notFound } from "next/navigation";
 
 export default async function CardView({
   params: { id: cardId },
@@ -15,9 +16,7 @@ export default async function CardView({
   const cardData = await getCard(cardId);
   const user = auth();
 
-  if (!cardData) {
-    return <div>Card not found</div>;
-  }
+  if (!cardData) notFound();
 
   const wishes = await getWishes(cardId);
 
