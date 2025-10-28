@@ -11,6 +11,17 @@ import TooltipButton from "~/components/tooltip-button";
 import { toast } from "sonner";
 import { deleteCard } from "~/server/actions/deleteCard";
 import { pauseCard } from "~/server/actions/pauseCard";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "~/components/ui/alert-dialog";
 
 export default function CreatorOptions(props: {
   cardData: {
@@ -42,18 +53,38 @@ export default function CreatorOptions(props: {
     }
 
     return (
-      <form action={handleDelete}>
+      <AlertDialog>
         <TooltipButton tooltip="Delete card">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="text-red-400 hover:text-red-500"
-            type="submit"
-          >
-            <TrashIcon />
-          </Button>
+          <AlertDialogTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-red-400 hover:text-red-500"
+            >
+              <TrashIcon />
+            </Button>
+          </AlertDialogTrigger>
         </TooltipButton>
-      </form>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete this card?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action permanently deletes the card and its wishes. You
+              cannot undo this.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <form action={handleDelete}>
+              <AlertDialogAction asChild>
+                <Button variant="destructive" type="submit">
+                  Delete card
+                </Button>
+              </AlertDialogAction>
+            </form>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     );
   }
 
