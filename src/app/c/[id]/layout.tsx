@@ -11,6 +11,7 @@ export async function generateMetadata({
   params: { id: string };
 }) {
   const cardData = await getCard(cardId);
+  if (!cardData) return {};
 
   return {
     title: "bday.quest (beta)",
