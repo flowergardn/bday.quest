@@ -46,6 +46,13 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" className={`${GeistSans.variable} dark`}>
+        <head>
+          <script
+            data-domain="bday.quest"
+            defer
+            src="https://plausible.astrid.sh/js/script.js"
+          />
+        </head>
         <body>
           <TooltipProvider>
             <Navbar />
