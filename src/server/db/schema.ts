@@ -31,6 +31,7 @@ export const cards = createTable("cards", {
     .default(sql`now()`),
   birthday: timestamp("birthday").notNull(),
   paused: boolean("paused").default(false).notNull(),
+  dyslexia: boolean("dyslexia").default(false).notNull(),
 });
 
 export const wishes = createTable("wishes", {

@@ -80,6 +80,9 @@ const config = {
           },
         },
       }),
+      fontFamily: {
+        openDyslexic: ["var(--font-openDyslexic)", "sans-serif"],
+      },
     },
   },
   plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],

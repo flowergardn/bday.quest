@@ -8,6 +8,7 @@ export default interface CardData {
   description: string | null;
   birthday: Date;
   paused: boolean;
+  dyslexia: boolean;
 }
 
 export interface CardDataWithWishes extends CardData {

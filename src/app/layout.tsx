@@ -6,6 +6,24 @@ import { Toaster } from "~/components/ui/sonner";
 import { TooltipProvider } from "~/components/ui/tooltip";
 import Navbar from "~/components/navbar";
 import { type Viewport } from "next";
+import localFont from "next/font/local";
+
+const openDyslexic = localFont({
+  src: [
+    {
+      path: "../../public/fonts/OpenDyslexic-Regular.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/OpenDyslexic-Bold.otf",
+      weight: "700",
+      style: "normal",
+    },
+  ],
+  variable: "--font-openDyslexic",
+  display: "swap",
+});
 
 export const metadata = {
   title: "bday.quest (beta)",
@@ -45,7 +63,10 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="en" className={`${GeistSans.variable} dark`}>
+      <html
+        lang="en"
+        className={`${GeistSans.variable} ${openDyslexic.variable} dark`}
+      >
         <head>
           <script
             data-domain="bday.quest"
