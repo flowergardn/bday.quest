@@ -19,6 +19,7 @@ import type CardData from "~/interfaces/CardData";
 import { deleteWish } from "~/server/actions/deleteWish";
 import { toast } from "sonner";
 import Image from "next/image";
+import { cn } from "~/lib/utils";
 
 const Signatures = ({
   signatures,
@@ -29,6 +30,7 @@ const Signatures = ({
   card: CardData;
   currentUser: string | null;
 }) => {
+  const [openDyslexia, setOpenDyslexia] = useState(true);
   const [page, setPage] = useState(0);
 
   const signaturesPerPage = 5;
@@ -130,8 +132,15 @@ const Signatures = ({
     );
   };
 
+  const useOpenDyslexia = card.dyslexia && openDyslexia;
+
   return (
-    <div className="flex h-full w-full flex-col justify-between">
+    <div
+      className={cn(
+        "flex h-full w-full flex-col justify-between",
+        useOpenDyslexia && "font-openDyslexic",
+      )}
+    >
       <h1 className="ml-2 mt-2 space-y-1">
         {displayedSignatures.map((signature: CardWish) => (
           <Signature signature={signature} key={signature.id} />
@@ -153,6 +162,17 @@ const Signatures = ({
         >
           <ArrowRightIcon />
         </button>
+      </div>
+      <div className="flex items-center justify-center">
+        <p
+          className={cn(
+            "text-sm hover:cursor-pointer",
+            !openDyslexia && "text-md text-gray-500",
+          )}
+          onClick={() => setOpenDyslexia(!openDyslexia)}
+        >
+          (Toggle Dyslexia Font)
+        </p>
       </div>
     </div>
   );

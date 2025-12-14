@@ -7,7 +7,6 @@ import { TooltipProvider } from "~/components/ui/tooltip";
 import TooltipButton from "~/components/tooltip-button";
 import CreatorOptions from "./creator-options";
 import { notFound } from "next/navigation";
-import { cn } from "~/lib/utils";
 
 export default async function CardView({
   params: { id: cardId },
@@ -49,12 +48,7 @@ export default async function CardView({
           <p>{cardData.description}</p>
         </article>
       </div>
-      <div
-        className={cn(
-          "mb-4 flex max-w-xl shrink-0 flex-col items-center p-6",
-          cardData.dyslexia && "font-openDyslexic",
-        )}
-      >
+      <div className="mb-4 flex max-w-xl shrink-0 flex-col items-center p-6">
         <Signatures
           currentUser={user.userId}
           signatures={wishes}
