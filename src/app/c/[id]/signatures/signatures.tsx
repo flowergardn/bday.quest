@@ -163,17 +163,19 @@ const Signatures = ({
           <ArrowRightIcon />
         </button>
       </div>
-      <div className="flex items-center justify-center">
-        <p
-          className={cn(
-            "text-sm hover:cursor-pointer",
-            !openDyslexia && "text-md text-gray-500",
-          )}
-          onClick={() => setOpenDyslexia(!openDyslexia)}
-        >
-          (Toggle Dyslexia Font)
-        </p>
-      </div>
+      {card.dyslexia && (
+        <div className="flex items-center justify-center">
+          <p
+            className={cn(
+              "text-sm hover:cursor-pointer",
+              !openDyslexia && "text-md text-gray-500",
+            )}
+            onClick={() => setOpenDyslexia(!openDyslexia)}
+          >
+            (Toggle Dyslexia Font)
+          </p>
+        </div>
+      )}
     </div>
   );
 };
